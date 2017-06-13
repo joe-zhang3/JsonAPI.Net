@@ -7,16 +7,8 @@ using Newtonsoft.Json.Linq;
 
 namespace JsonAPI.Net
 {
-    public class JaDocument : IResource{
-
-        private string templateName;
+    public class JaDocument : JaResourceBase, IResource{
         private List<IResource> resources = new List<IResource>();
-
-        private IDictionary<string, object> meta = new Dictionary<string, object>();
-        private IEnumerable<ILink> links = new List<ILink>();
-
-        public IDictionary<string, object> Meta{ get { return meta; }}
-        public IEnumerable<ILink> Links { get { return links; }}
 
         public bool CompoundDocuments { get; set; }
 
@@ -28,20 +20,15 @@ namespace JsonAPI.Net
             this.resources.Add(resource);
 		}
 
-        public JaDocument OfTemplate(string templateName){
-            this.templateName = templateName;
-            return this;
-        }
+        public override JToken Build(JaBuilder builder, string templateName){
 
-        public JToken Build(JaBuilder builder){
+            JObject masterTemplate = GetMasterTemplate(templateName);
 
-            JObject template = GetMasterTemplate();
-
-            if (template == null) throw new Exception("Template of master cannot be empty");
+            if (masterTemplate == null) throw new Exception("Template of master cannot be empty");
 
             List<string> propertiesNeedToRemove = new List<string>(); 
 
-            foreach(var property in template.Properties()){
+            foreach(var property in masterTemplate.Properties()){
 
                 if(property.Name.Equals("data", StringComparison.CurrentCultureIgnoreCase)){
                     property.Value = BuildData(builder);
@@ -56,9 +43,9 @@ namespace JsonAPI.Net
                 }
             }
 
-            propertiesNeedToRemove.ForEach(p => template.Remove(p));
+            propertiesNeedToRemove.ForEach(p => masterTemplate.Remove(p));
 
-            return template;
+            return masterTemplate;
         }
 
         private JToken BuildData(JaBuilder builder){
@@ -76,11 +63,11 @@ namespace JsonAPI.Net
             }
         }
 
-		private JObject GetMasterTemplate()
+        private JObject GetMasterTemplate(string tempName)
 		{
-            if (templateName != null )
+            if (tempName != null )
 			{
-                return JaTemplates.GetTemplate(templateName);
+                return JaTemplates.GetTemplate(tempName);
 			}
 			else
 			{

@@ -21,7 +21,13 @@ namespace JsonAPI.Net
             JObject jb;
 
             if(!templates.TryGetValue(templateName, out jb)){
-                throw new Exception($"Template {templateName} does not exist");
+
+                if(templateName.Equals(Constants.DEFAULT_RELATIONSHIP_NAME)){
+                    jb = JObject.Parse(Constants.DEFAULT_RELATIONSHIP);
+                    templates.Add(Constants.DEFAULT_RELATIONSHIP_NAME, jb);
+                }else{
+                    throw new Exception($"Template {templateName} does not exist");
+				}
             }
 
             return useCopy ? (JObject)jb.DeepClone() : jb;

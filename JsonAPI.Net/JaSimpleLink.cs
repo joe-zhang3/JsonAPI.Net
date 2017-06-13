@@ -1,15 +1,12 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-
 namespace JsonAPI.Net
 {
-    public class JaSimpleLink : ILink
+    public class JaSimpleLink : JaLink
     {
-        public string Name { get; set; }
-        public Uri URL { get; set; }
-
-        public JToken Build(JaBuilder builder){
-            return new JProperty(Name, URL.AbsolutePath);
+        public override JToken Build(JaBuilder builder, string temnplate = null)
+        {
+            return new JProperty(Name, Href.AbsolutePath);
         }
     }
 }

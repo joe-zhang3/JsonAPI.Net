@@ -1,17 +1,18 @@
 ﻿﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using JsonAPI.Net;
 
-namespace FlexibleJsonAPI.WebAPI.Resource
+namespace JsonAPI.Net.WebAPI.Resource
 {
     /// <summary>
     /// types/
     /// </summary>
     public class Account : JaResource
     {
-        public Account(){
-            OfLinks("/customers/accounts")
-                .OfTemplate("Accounts");
+        public Account()
+        {
+            OfURL("/customers/accounts");
         }
 
         public override string Id
@@ -28,5 +29,7 @@ namespace FlexibleJsonAPI.WebAPI.Resource
         public string Age { get; set; }
 
         public State State { get; set; }
+
+        public List<Person> Persons{get;set;}
     }
 }

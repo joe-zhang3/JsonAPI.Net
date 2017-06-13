@@ -11,76 +11,58 @@ namespace JsonAPI.Net
 	/// self links name equals the type name
 	/// </summary>
 
-    public abstract class JaResource : IResource, ICacheable
+    public abstract class JaResource : JaResourceBase, IResource, ICacheable
     {
-        private string type = null;
-        private string templateName = null;
-        private string link = null;
-        private IDictionary<string, string> meta;
-        private TypeInfo ti = null;
-        public virtual string Id { get; }
-
-        public JaResource(){
-            this.ti = this.GetType().GetTypeInfo();
-        }
-
-       	/// <summary>
-		/// By default, the type is the Pluralize of the class name
-		/// </summary>
-		/// <value>The type.</value>
-		public string Type { 
-            get{
-				if (type != null) return type;
-
-				return GetType().Name.ToLower().Pluralize();
-            }
-        }
-        /// <summary>
-        /// Template name must be pascal, like Accounts
-        /// </summary>
-        /// <returns>The template.</returns>
-        /// <param name="templateName">Template name.</param>
-        public JaResource OfTemplate(string templateName){
-            this.templateName = templateName;
-            return this;
-        }
-
-        public JaResource OfType(string type){
-            this.type = type;
-            return this;
-        }
-
-        public JaResource OfLinks(string link){
-            this.link = link;
-            return this;
-        }
-
-        public Uri Link{
-            get{
-                if (link != null) return new Uri($"{link}/{Id ?? ""}");
-
-                return new Uri($"/{Type}/{Id}");
-            }
-        }
-
- 		public IDictionary<string, string> Meta
-		{
-			get
-			{
-                if (meta == null) meta = new Dictionary<string, string>();
-
-				return meta;
-			}
-		}
-
-        public JToken Build(JaBuilder builder){
+        public override JToken Build(JaBuilder builder, string templateName){
             JObject template = JaTemplates.GetTemplate(templateName != null ? templateName : Type.Pascalize());
 
-            foreach(var property in template.Properties()){
-                builder.Populate(property, this);
+            List<string> propertiesToRemove = new List<string>();
+
+			foreach (var property in template.Properties())
+			{
+				if (property.Name.Equals(Constants.DEFAULT_RELATIONSHIP_NAME))
+				{
+                    JToken jt = BuildRelationships(property.Value, builder);
+
+					if (jt == null || jt.IsEmpty())
+					{
+						propertiesToRemove.Add(property.Name);
+					}
+					else
+					{
+						property.Value = jt;
+					}
+				}
+				else
+				{
+					builder.Populate(property, this);
+				}
+			}
+
+            propertiesToRemove.ForEach(n => template.Remove(n));
+
+			return template;
+        }
+
+        public virtual JToken BuildRelationships(JToken relationships, JaBuilder builder){
+
+            JObject jObject = relationships as JObject; //relationships must be a object
+
+            List<string> propertiesToRemove = new List<string>(); 
+
+			foreach(var property in jObject.Properties()){ //need to know what need to be built
+                JToken jt = builder.GetPropertyValue(property.Name.Pascalize(), this, Constants.DEFAULT_RELATIONSHIP_NAME);
+
+                if(jt == null || jt.IsEmpty()){
+                    propertiesToRemove.Add(property.Name);
+                }else{
+                    property.Value = jt;
+                }
             }
 
-            return template;
-		}
+            propertiesToRemove.ForEach(n => jObject.Remove(n));
+
+            return jObject;
+        }
     }
 }

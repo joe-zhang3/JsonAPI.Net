@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using FlexibleJsonAPI.WebAPI.Resource;
+using JsonAPI.Net.WebAPI.Resource;
 using JsonAPI.Net;
 
 namespace FlexibleJsonAPI.WebAPI.Controllers
@@ -23,18 +23,23 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
                 State = new State(){StateId = 1, Name="US"},
             };
 
-            a.Meta.Add("key", "value");
+            a.Links.Add(new AccountLink("accounts"){Method ="get", Href = new Uri("/accounts")});
+
+            a.Persons = new List<Person>()
+            {
+                new Person(){PersonId = 1, Name="Lele"},
+                new Person(){PersonId = 2, Name="Lele1"},
+            };
 
             return a;
         }
 
 		[HttpGet]
 		[Route("account")]
-        [JaAction(masterTemplate:"Master")]
         public IEnumerable<Account> GetAccounts()
 		{
             List<Account> accounts = new List<Account>() { 
-                new Account() { AccountId = 1, FirstName = "Joe", LastName = "Zhang"} ,
+                new Account() { AccountId = 1, FirstName = "Joe", LastName = "Zhang", Age ="13"} ,
                 new Account() { AccountId = 2, FirstName = "Jenner", LastName = "Wang" },
                 new Account() { AccountId = 3, FirstName = "Joe", LastName = "Zhang" }
             };
@@ -44,7 +49,6 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
 
 		[HttpGet]
 		[Route("accounts")]
-		[JaAction(masterTemplate: "Master")]
 		public JaDocument GetAccounts1()
 		{
 			List<Account> accounts = new List<Account>() {

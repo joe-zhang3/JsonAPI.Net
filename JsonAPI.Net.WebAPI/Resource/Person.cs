@@ -1,20 +1,23 @@
-﻿﻿using System;
+﻿using System;
 using JsonAPI.Net;
 
 namespace JsonAPI.Net.WebAPI.Resource
 {
-    public class State : JaResource
+    public class Person : JaResource
     {
+        public Person(){
+            OfType("persons");
+        }
+
         public override string Id
         {
             get
             {
-                return StateId.ToString();
+                return PersonId.ToString();
             }
         }
 
-        public int StateId { get; set; }
+        public int PersonId { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
     }
 }

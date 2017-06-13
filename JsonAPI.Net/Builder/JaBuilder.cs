@@ -23,24 +23,17 @@ namespace JsonAPI.Net
 				{
 					Populate(o, inputResource);
 				}
-			}
-			else if (token is JProperty)
-			{
+            } else if (token is JProperty) {
 				JProperty jp = (JProperty)token;
 
-				if (jp.Value.Type == JTokenType.Object)
-				{
-					foreach (var obj in ((JObject)jp.Value).Properties())
-					{
+                if (jp.Value.Type == JTokenType.Object) {
+                    foreach (var obj in ((JObject)jp.Value).Properties()) {
 						Populate(obj, inputResource);
 					}
-				}
-				else if (jp.Value.Type == JTokenType.String)
-				{
+                }else {
 					string key = jp.EvaulationKey();
 
-					if (key != null)
-					{
+					if (key != null){
                         jp.Value = GetPropertyValue(key, inputResource);
 					}
 				}
@@ -58,7 +51,10 @@ namespace JsonAPI.Net
 		/// <param name="key">Key.</param>
 		/// <param name="value">Value.</param>
 
-        public virtual JToken GetPropertyValue(string key, object value)
+        public virtual JToken GetPropertyValue(string key, object value){
+            return GetPropertyValue(key, value, null);
+        }
+        public virtual JToken GetPropertyValue(string key, object value, string templateName)
 		{
             if (value == null || key == null) return null;
 
@@ -74,16 +70,14 @@ namespace JsonAPI.Net
 				object tempValue = temp.GetValue(value);
 
 				return GetPropertyValue(key.Substring(dot + 1), tempValue);
-			}
-			else
-			{
-                PropertyInfo pi = value.GetType().GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
+            } else {
+				PropertyInfo pi = value.GetType().GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
 
 				if (pi == null) return null;
 
 				object returnValue = pi.GetValue(value);
 
-				if (returnValue == null) return null;
+                if (returnValue == null) return null;
 
                 bool isPreHandled = false;
 
@@ -98,8 +92,10 @@ namespace JsonAPI.Net
                     if(typeof(IDictionary<,>).IsAssignableFrom(pi.PropertyType.GetGenericTypeDefinition())){
                         return ParseFromDic(returnValue);
                     }else if(typeof(IEnumerable<IResource>).IsAssignableFrom(pi.PropertyType)){
-                        return ParseFromEnumberable(returnValue);	
+                        return ParseFromEnumberable(returnValue, templateName);	
                     }
+                } else if(typeof(IResource).IsAssignableFrom(pi.PropertyType)){
+                    return ((IResource)returnValue).Build(this, templateName);
                 }
 
 				return new JValue(returnValue);
@@ -111,7 +107,7 @@ namespace JsonAPI.Net
             return null;
         }
 
-        public virtual JToken ParseFromDic(object obj){
+        public JToken ParseFromDic(object obj){
 			JObject j = new JObject();
 
             IDictionary<string, object> dic = (IDictionary<string, object>)obj;
@@ -125,16 +121,21 @@ namespace JsonAPI.Net
 
 			return j;
         }
+        public JToken ParseFromEnumberable(object obj)
+        {
+            return ParseFromEnumberable(obj, null);
+        }
+        public JToken ParseFromEnumberable(object obj, string templateName){
 
-        public virtual JToken ParseFromEnumberable(object obj){
-			JArray jr = new JArray();
+            IEnumerable<IResource> elements = (IEnumerable<IResource>)obj;
 
-			foreach (var resource in (IEnumerable<IResource>)obj)
-			{
-				jr.Add(resource.Build(this));
+            JContainer ja = elements.FirstOrDefault()?.GetContainer() ?? new JArray(); 
+
+			foreach (var resource in elements){
+                ja.Add(resource.Build(this, templateName));
 			}
 
-			return jr;
+			return ja;
         }
     }
 }

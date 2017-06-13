@@ -6,7 +6,9 @@ namespace JsonAPI.Net
 {
     public interface IResource 
     {
-        JToken Build(JaBuilder builder);
+        JToken Build(JaBuilder builder, string template = null);
+
+        JContainer GetContainer();
     }
 }
    

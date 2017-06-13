@@ -90,6 +90,8 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Resource\Account.cs" />
     <Compile Include="Resource\State.cs" />
+    <Compile Include="Resource\Person.cs" />
+    <Compile Include="Resource\AccountLink.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />

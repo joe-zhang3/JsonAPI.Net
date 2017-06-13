@@ -83,14 +83,16 @@
     <Compile Include="JaTemplates.cs" />
     <Compile Include="Extensions\JPropertyExtension.cs" />
     <Compile Include="IResource.cs" />
-    <Compile Include="JaResources.cs" />
     <Compile Include="Attributes\JaActionAttribute.cs" />
     <Compile Include="Builder\JaBuilder.cs" />
-    <Compile Include="JaSimpleLink.cs" />
+    <Compile Include="JaLink.cs" />
     <Compile Include="ILink.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="JaConfiguration.cs" />
     <Compile Include="Attributes\JaBuilderAttribute.cs" />
+    <Compile Include="JaResourceBase.cs" />
+    <Compile Include="JaSimpleLink.cs" />
+    <Compile Include="JaComplexLink.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
