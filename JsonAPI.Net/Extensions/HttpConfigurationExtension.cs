@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Web.Http;
-using JsonAPI.Net;
 
-namespace JsonAPI.Net.Extensions
+namespace JsonAPI.Net
 {
     public static class HttpConfigurationExtension
     {
-        public static void ConfigureJsonAPI(this HttpConfiguration configuration){
+        public static void ConfigureJsonAPI(this HttpConfiguration configuration, string templatePath){
 
             configuration.Formatters.Clear();
             configuration.Formatters.Insert(0, new JaMediaTypeFormatter());
 
-            var a = JaTemplates.Templates;
+            JaTemplates.Intialize(templatePath);
         }
     }
 }

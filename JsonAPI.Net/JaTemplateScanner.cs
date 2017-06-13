@@ -3,11 +3,10 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using JsonAPI.Net.Extensions;
 
 namespace JsonAPI.Net
 {
-    public class JaTemplateScanner
+    internal class JaTemplateScanner
     {
         public static IDictionary<string, JObject> Scan(string path){
 
@@ -38,7 +37,11 @@ namespace JsonAPI.Net
 
                         JObject t = objects[templateName];
 
-                        property.Value = t;
+                        if(property.Value.Type == JTokenType.Array){
+                            property.Value = new JArray(t);
+                        }else{
+                            property.Value = t;    
+                        }
                     }
 				}
             }

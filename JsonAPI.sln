@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonAPI.Net.WebAPI", "JsonAPI.Net.WebAPI\JsonAPI.Net.WebAPI.csproj", "{04D2A157-DC76-415F-8FDF-CD6CB8BEE916}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonAPI.Net", "JsonAPI.Net\JsonAPI.Net.csproj", "{A7298243-8C8D-4C21-A6D0-D491209A56C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04D2A157-DC76-415F-8FDF-CD6CB8BEE916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04D2A157-DC76-415F-8FDF-CD6CB8BEE916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04D2A157-DC76-415F-8FDF-CD6CB8BEE916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04D2A157-DC76-415F-8FDF-CD6CB8BEE916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7298243-8C8D-4C21-A6D0-D491209A56C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7298243-8C8D-4C21-A6D0-D491209A56C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7298243-8C8D-4C21-A6D0-D491209A56C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7298243-8C8D-4C21-A6D0-D491209A56C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

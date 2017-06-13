@@ -1,20 +1,19 @@
 ﻿
 using System;
-using System.IO;
-using System.Text;
-using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Converters;
-using System.Reflection;
-using JsonAPI.Net.Attributes;
-using JsonAPI.Net.Builder;
-using JsonAPI.Net.Extensions;
+
 namespace JsonAPI.Net
 {
-    public class JaConverter : JsonConverter
+    internal class JaConverter : JsonConverter
     {
+        private JaConfiguration configuration = null;
+
+        public JaConverter(JaConfiguration configuration){
+            this.configuration = configuration;
+        }
+
         public override bool CanConvert(Type objectType)
         {
             return true;
@@ -31,29 +30,37 @@ namespace JsonAPI.Net
         {
             get
             {
-                return base.CanWrite;
+                return true;
             }
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            string templateName = value.GetTemplateName();
-
-            JObject returnObject = null;
+            if (value == null) return;
 
             try{
+                JaDocument jaDoc = null;
 
-                JObject jobj = JaTemplates.Templates[templateName];
+                IEnumerable<IResource> resources = value as IEnumerable<IResource>;
 
-                JaObjectBuilder jaObject = new JaObjectBuilder(jobj, value);
+                if(resources == null){
+                    jaDoc = value is JaDocument ? (JaDocument)value : new JaDocument((IResource)value);   
+                }else{
+                    jaDoc = new JaDocument(resources);
+                }
 
-                returnObject = jaObject.BuildObject();
+                if (configuration.TemplateName != null) jaDoc.OfTemplate(configuration.TemplateName);
+
+                jaDoc.Build(getBuilder()).WriteTo(writer);
 
             }catch(Exception e){
-                throw e;
+                //debug purpose
+                 throw e;
             }
+        }
 
-            returnObject?.WriteTo(writer);
+        private JaBuilder getBuilder(){
+            return configuration.Builder ?? JaBuilder.GetInstance();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -61,6 +68,4 @@ namespace JsonAPI.Net
             throw new NotImplementedException();
         }
     }
-
-
 }

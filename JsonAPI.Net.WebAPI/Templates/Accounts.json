@@ -1,0 +1,21 @@
+﻿{
+  'id': '{{id}}',
+  'type': '{{type}}',
+  'meta': { 'version': '1.1' },
+  'attributes': {
+    'first-name': '',
+    'last-name': '{{LastName}}',
+    "age" :  '{{Age}}'
+  },
+  'links': {
+    "self": '{{link}}'
+  },
+  "relationships": {
+    "state": {
+      "data": {
+        "type": "state",
+        "id": "{{State.StateId}}"
+      }
+    }
+  }
+}

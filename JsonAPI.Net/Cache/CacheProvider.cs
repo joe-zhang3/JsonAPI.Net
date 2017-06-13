@@ -1,5 +1,6 @@
 ﻿using System;
-namespace JsonAPI.Net.Cache
+
+namespace JsonAPI.Net
 {
     public class CacheProvider
     {

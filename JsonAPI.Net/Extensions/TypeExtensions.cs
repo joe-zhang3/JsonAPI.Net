@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace JsonAPI.Net.Extensions
+namespace JsonAPI.Net
 {
     public static class TypeExtensions
     {

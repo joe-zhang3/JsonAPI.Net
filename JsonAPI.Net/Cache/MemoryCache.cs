@@ -1,13 +1,13 @@
 ﻿using System;
-namespace JsonAPI.Net.Cache
+namespace JsonAPI.Net
 {
-    public class MemoryCache : ICache<ICacheAble>
+    public class MemoryCache : ICache<ICacheable>
     {
-        public ICacheAble GetItem(String key){
+        public ICacheable GetItem(String key){
             return null;
         }
 
-        public void SetItem(String key, ICacheAble resource){
+        public void SetItem(String key, ICacheable resource){
             
         }
     }

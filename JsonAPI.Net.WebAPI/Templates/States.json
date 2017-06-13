@@ -1,0 +1,6 @@
+﻿{
+  'data': {
+    "id": "{{StateId}}",
+    "type": "state",
+  }
+}

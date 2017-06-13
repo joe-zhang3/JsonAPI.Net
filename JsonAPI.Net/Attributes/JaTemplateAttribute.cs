@@ -1,12 +1,12 @@
 ﻿using System;
-namespace JsonAPI.Net.Attributes
+namespace JsonAPI.Net
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class JaResourceAttribute : Attribute
+    public class JaTemplateAttribute : Attribute
     {
         private string template;
 
-        public JaResourceAttribute(string template)
+        public JaTemplateAttribute(string template)
         {
             this.template = template;
         }

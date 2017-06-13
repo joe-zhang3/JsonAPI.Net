@@ -41,6 +41,27 @@
     <Reference Include="Humanizer">
       <HintPath>..\packages\Humanizer.Core.2.2.0\lib\netstandard1.0\Humanizer.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,17 +70,27 @@
     <Compile Include="JaTemplateScanner.cs" />
     <Compile Include="Cache\CacheProvider.cs" />
     <Compile Include="Cache\ICache.cs" />
-    <Compile Include="Cache\ICacheAble.cs" />
+    <Compile Include="Cache\ICacheable.cs" />
     <Compile Include="Cache\MemoryCache.cs" />
     <Compile Include="Extensions\HttpConfigurationExtension.cs" />
-    <Compile Include="Attributes\JaResourceAttribute.cs" />
+    <Compile Include="Attributes\JaTemplateAttribute.cs" />
     <Compile Include="Extensions\JaMediaTypeFormatter.cs" />
-    <Compile Include="Builder\JaObjectBuilder.cs" />
+    <Compile Include="Builder\JaDocument.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\ObjectExtension.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="JaTemplates.cs" />
+    <Compile Include="Extensions\JPropertyExtension.cs" />
+    <Compile Include="IResource.cs" />
+    <Compile Include="JaResources.cs" />
+    <Compile Include="Attributes\JaActionAttribute.cs" />
+    <Compile Include="Builder\JaBuilder.cs" />
+    <Compile Include="JaSimpleLink.cs" />
+    <Compile Include="ILink.cs" />
+    <Compile Include="Extensions\JTokenExtensions.cs" />
+    <Compile Include="JaConfiguration.cs" />
+    <Compile Include="Attributes\JaBuilderAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

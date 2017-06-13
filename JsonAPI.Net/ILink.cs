@@ -1,8 +1,7 @@
 ﻿using System;
-
 namespace JsonAPI.Net
 {
-    public interface ICacheable
+    public interface ILink : IResource
     {
         
     }
