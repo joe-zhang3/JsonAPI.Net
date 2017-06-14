@@ -29,10 +29,11 @@ namespace JsonAPI.Net
             List<string> propertiesNeedToRemove = new List<string>(); 
 
             foreach(var property in masterTemplate.Properties()){
-
-                if(property.Name.Equals("data", StringComparison.CurrentCultureIgnoreCase)){
+                if (property.Name.Equals("data", StringComparison.CurrentCultureIgnoreCase)){
                     property.Value = BuildData(builder);
-                }else{
+                }else if(property.Name.Equals("included")){
+                    property.Value = builder.BuildIncludedResources();                    
+                } else{
                     JToken jt = builder.GetPropertyValue(property.EvaulationKey(), this);
 
                     if(jt == null || jt.IsEmpty()){
@@ -42,6 +43,8 @@ namespace JsonAPI.Net
                     }
                 }
             }
+
+
 
             propertiesNeedToRemove.ForEach(p => masterTemplate.Remove(p));
 

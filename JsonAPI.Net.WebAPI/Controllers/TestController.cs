@@ -31,6 +31,10 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
                 new Person(){PersonId = 2, Name="Lele1"},
             };
 
+            Person p = new Person() { PersonId = 3, Name = "Lele2" };
+
+            p.Links.Add(new JaSimpleLink("self", new Uri("/persons")));
+
             return a;
         }
 

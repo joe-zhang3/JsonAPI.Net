@@ -13,28 +13,22 @@ namespace JsonAPI.Net
 
     public abstract class JaResource : JaResourceBase, IResource, ICacheable
     {
-        public override JToken Build(JaBuilder builder, string templateName){
+        public override JToken Build(JaBuilder builder, string templateName)
+		{
             JObject template = JaTemplates.GetTemplate(templateName != null ? templateName : Type.Pascalize());
 
             List<string> propertiesToRemove = new List<string>();
 
-			foreach (var property in template.Properties())
-			{
-				if (property.Name.Equals(Constants.DEFAULT_RELATIONSHIP_NAME))
-				{
+			foreach (var property in template.Properties()){
+				if (property.Name.Equals(Constants.DEFAULT_RELATIONSHIP_NAME)){
                     JToken jt = BuildRelationships(property.Value, builder);
 
-					if (jt == null || jt.IsEmpty())
-					{
+					if (jt == null || jt.IsEmpty()){
 						propertiesToRemove.Add(property.Name);
-					}
-					else
-					{
+					} else {
 						property.Value = jt;
 					}
-				}
-				else
-				{
+				} else {
 					builder.Populate(property, this);
 				}
 			}

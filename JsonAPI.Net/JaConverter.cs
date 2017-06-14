@@ -54,13 +54,12 @@ namespace JsonAPI.Net
                 jaDoc.Build(getBuilder()).WriteTo(writer);
 
             }catch(Exception e){
-                //debug purpose
                  throw e;
             }
         }
 
         private JaBuilder getBuilder(){
-            return configuration.Builder ?? JaBuilder.GetInstance();
+            return configuration.Builder ?? new JaBuilder();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

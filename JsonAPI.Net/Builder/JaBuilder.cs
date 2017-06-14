@@ -8,9 +8,32 @@ namespace JsonAPI.Net
 {
     public class JaBuilder
     {
-        private static JaBuilder builder = new JaBuilder();
-        public static JaBuilder GetInstance(){
-            return builder;
+        private ICollection<IResource> includedResources;
+        private bool buildingIncludedResouce = false;
+
+        private void AddIncludedResources(IResource resource){
+            if (buildingIncludedResouce) return;
+            if (includedResources == null) includedResources = new List<IResource>();
+
+            includedResources.Add(resource);
+        }
+
+        public virtual JToken BuildIncludedResources(){
+
+            buildingIncludedResouce = true;
+
+            JArray ja = new JArray();
+
+            if(includedResources != null){
+                foreach(var r in includedResources){
+                    ja.Add(r.Build(this));
+                }
+            }
+
+            buildingIncludedResouce = false;
+            includedResources?.Clear();
+
+            return ja;
         }
 
         public virtual void Populate(JToken token, object inputResource)
@@ -95,6 +118,7 @@ namespace JsonAPI.Net
                         return ParseFromEnumberable(returnValue, templateName);	
                     }
                 } else if(typeof(IResource).IsAssignableFrom(pi.PropertyType)){
+                    BuildIncludedResource((IResource)returnValue, templateName);
                     return ((IResource)returnValue).Build(this, templateName);
                 }
 
@@ -132,10 +156,19 @@ namespace JsonAPI.Net
             JContainer ja = elements.FirstOrDefault()?.GetContainer() ?? new JArray(); 
 
 			foreach (var resource in elements){
+                BuildIncludedResource(resource, templateName);
                 ja.Add(resource.Build(this, templateName));
 			}
 
 			return ja;
+        }
+
+        private void BuildIncludedResource(IResource resource, string templateName){
+			//add the reference object to the included list when building relationships.
+			if (templateName != null && templateName.Equals(Constants.DEFAULT_RELATIONSHIP_NAME))
+			{
+				AddIncludedResources(resource);
+			}
         }
     }
 }

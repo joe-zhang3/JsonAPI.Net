@@ -66,8 +66,7 @@ namespace JsonAPI.Net
 		}
 
 
-		public JToken Build(JaBuilder builder)
-		{
+		public JToken Build(JaBuilder builder){
 			return Build(builder, tempName);
 		}
 

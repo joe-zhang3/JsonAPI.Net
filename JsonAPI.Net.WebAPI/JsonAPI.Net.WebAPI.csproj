@@ -107,6 +107,7 @@
     <None Include="Templates\Master.json" />
     <None Include="Templates\States.json" />
     <None Include="Templates\Accounts.json" />
+    <None Include="Templates\Persons.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JsonAPI.Net\JsonAPI.Net.csproj">
