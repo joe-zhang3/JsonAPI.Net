@@ -83,15 +83,12 @@
     <Compile Include="Extensions\JPropertyExtension.cs" />
     <Compile Include="IResource.cs" />
     <Compile Include="Attributes\JaActionAttribute.cs" />
-    <Compile Include="Builder\JaBuilder.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="JaMessage.cs" />
-    <Compile Include="Attributes\JaBuilderAttribute.cs" />
     <Compile Include="JaResourceBase.cs" />
     <Compile Include="JaDocument.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\JaDefaultBuilder.cs" />
-    <Compile Include="Builder\EmptyClass.cs" />
     <Compile Include="Builder\JaDictionaryBuilder.cs" />
     <Compile Include="Builder\JaEnumerableBuilder.cs" />
     <Compile Include="Builder\JaBuilderContext.cs" />

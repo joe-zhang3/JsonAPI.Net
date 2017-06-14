@@ -8,8 +8,6 @@ namespace JsonAPI.Net
 {
     public class JaResourceBase 
     {
-        protected readonly string[] validKeys = { "jsonapi", "meta"};
-
         public virtual string Id { get; }
 
         private ICollection<ILink> links;

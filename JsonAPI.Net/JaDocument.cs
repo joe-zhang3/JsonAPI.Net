@@ -34,7 +34,12 @@ namespace JsonAPI.Net
                 }else if(property.Name.Equals("included")){
                     property.Value = context.BuildIncludedResources();                    
                 } else{
-                    JToken jt = context.GetPropertyValue(property.EvaulationKey(), this);
+
+                    string key = property.EvaulationKey();
+
+                    if (key == null) continue;
+
+                    JToken jt = context.GetPropertyValue(key, this);
 
                     if(jt == null || jt.IsEmpty()){
                         propertiesNeedToRemove.Add(property.Name);
