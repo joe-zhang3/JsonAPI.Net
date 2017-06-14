@@ -11,6 +11,9 @@ namespace JsonAPI.Net.WebAPI.Resource
             {
                 return StateId.ToString();
             }
+            set{
+                StateId = int.Parse(value);
+            }
         }
 
         public int StateId { get; set; }

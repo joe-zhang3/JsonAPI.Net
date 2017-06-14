@@ -20,7 +20,7 @@ namespace JsonAPI.Net
             this.resources.Add(resource);
 		}
 
-        public override JToken Build(JaBuilderContext context){
+        public override JToken Serialize(JaBuilderContext context){
 
             JObject masterTemplate = GetMasterTemplate(context.MasterTemplate);
 
@@ -60,12 +60,12 @@ namespace JsonAPI.Net
                 JArray array = new JArray();
 
                 resources.ForEach(r => {
-                    array.Add(r.Build(context));
+                    array.Add(r.Serialize(context));
                 });
 
                 return array;
             }else{
-                return resources.First().Build(context);
+                return resources.First().Serialize(context);
             }
         }
 

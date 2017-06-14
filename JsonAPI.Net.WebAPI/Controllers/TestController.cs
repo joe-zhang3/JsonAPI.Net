@@ -19,6 +19,27 @@ namespace JsonAPI.Net.WebAPI
             return buildAccount();
         }
 
+        [HttpPost]
+        [Route("account")]
+        public State CreateAccount(Account account)
+		{
+            Account a = account;
+
+            a.State.Name = "accepted";
+
+            return a.State;
+		}
+		[HttpPost]
+		[Route("states")]
+		public State CreateState(List<State> states)
+		{
+            foreach(var state in states)
+            {
+                
+            }
+			return null;
+		}
+
 		[HttpGet]
 		[Route("account")]
         public IEnumerable<Account> GetAccounts()
@@ -58,7 +79,8 @@ namespace JsonAPI.Net.WebAPI
 			{
                 AccountId = new Random().Next(),
 				FirstName = "Joe",
-				LastName = "Zhang"
+				LastName = "Zhang",
+                State = new State(){StateId = 1, Address="China", Name="MyState"}
 			};
 
             a.OfLink(new AccountLink("accounts") { Href = new Uri("/accounts"), Method = "get", Test="test" });

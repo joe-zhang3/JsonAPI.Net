@@ -9,7 +9,7 @@ namespace JsonAPI.Net
             Href = href;
         }
 
-        public override JToken Build(JaBuilderContext context)
+        public override JToken Serialize(JaBuilderContext context)
         {
             return new JProperty(Name, Href.AbsolutePath);
         }

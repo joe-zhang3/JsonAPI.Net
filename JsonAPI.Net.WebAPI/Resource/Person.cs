@@ -15,6 +15,9 @@ namespace JsonAPI.Net.WebAPI.Resource
             {
                 return PersonId.ToString();
             }
+            set{
+                PersonId = int.Parse(value);
+            }
         }
 
         public int PersonId { get; set; }

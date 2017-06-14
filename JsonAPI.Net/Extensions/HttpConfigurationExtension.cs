@@ -7,7 +7,8 @@ namespace JsonAPI.Net
     {
         public static void ConfigureJsonAPI(this HttpConfiguration configuration, Action<JaConfiguration> action)
 		{
-            configuration.Formatters.Clear();
+            configuration.MessageHandlers.Add(new JaDelegatingHandler());
+            //configuration.Formatters.Clear();
 			configuration.Formatters.Insert(0, new JaMediaTypeFormatter());
 
             JaConfiguration config = new JaConfiguration(); 

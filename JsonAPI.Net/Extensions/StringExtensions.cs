@@ -50,5 +50,9 @@ namespace JsonAPI.Net
 
             return value.Substring(index + 1, dotIndex - index-1);
         }
+
+        public static string ToPascal(this string value){
+            return value.Replace("-", "_").Pascalize();
+        }
     }
 }

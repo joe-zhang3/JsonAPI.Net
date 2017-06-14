@@ -8,7 +8,7 @@ namespace JsonAPI.Net
 {
     public class JaResourceBase 
     {
-        public virtual string Id { get; }
+        public virtual string Id { get; set; }
 
         private ICollection<ILink> links;
         private ICollection<ILink> relatedLinks;
@@ -95,12 +95,60 @@ namespace JsonAPI.Net
 			}
 		}
 
-		public virtual JToken Build(JaBuilderContext context){
+		public virtual JToken Serialize(JaBuilderContext context){
             throw new NotImplementedException();
 		}
 
         public JContainer GetContainer(){
             return new JArray();
+        }
+
+        public static JToken Deserialize(JToken token){
+
+            JToken tmp = token["data"] ?? token;
+
+            if(tmp is JArray){
+                JArray array = new JArray();
+
+                foreach(var o in (JArray)tmp){
+                    array.Add(ParseObject(o));
+                }
+
+                return array;
+
+            }else{
+                return ParseObject(tmp);   
+            }
+        }
+        /// <summary>
+        /// Only parse id, attributes
+        /// </summary>
+        /// <returns>The object.</returns>
+        /// <param name="token">Token.</param>
+        private static JObject ParseObject(JToken token){
+
+            JObject obj = new JObject();
+
+            if (token["id"] != null) obj["id"] = token["id"];
+
+            foreach (var attr in token["attributes"] ?? new JArray()){
+				var property = attr as JProperty;
+
+                if (property == null) continue;
+
+                obj.Add(property.Name.ToPascal(), property.Value);
+			}
+
+			foreach (var r in token["relationships"] ?? new JArray())
+			{
+				var relationship = r as JProperty;
+
+                if (relationship == null) continue;
+
+                obj.Add(relationship.Name.ToPascal(), Deserialize(relationship.Value));
+			}
+
+            return obj;
         }
     }
 }

@@ -103,6 +103,7 @@
     <Compile Include="JaConfiguration.cs" />
     <Compile Include="Builder\JaCustomBuilder.cs" />
     <Compile Include="Builder\ICustomBuilder.cs" />
+    <Compile Include="JaDelegatingHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
