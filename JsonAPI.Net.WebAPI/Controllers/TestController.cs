@@ -14,28 +14,10 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
     {
         [HttpGet]
         [Route("account/{id:int}")]
+        [JaAction(masterTemplate:"Master")]
         public Account GetAccount(int id){
 
-            Account a = new Account() { 
-                AccountId = 1, 
-                FirstName="Joe", 
-                LastName="Zhang", 
-                State = new State(){StateId = 1, Name="US"},
-            };
-
-            a.Links.Add(new AccountLink("accounts"){Method ="get", Href = new Uri("/accounts")});
-
-            a.Persons = new List<Person>()
-            {
-                new Person(){PersonId = 1, Name="Lele"},
-                new Person(){PersonId = 2, Name="Lele1"},
-            };
-
-            Person p = new Person() { PersonId = 3, Name = "Lele2" };
-
-            p.Links.Add(new JaSimpleLink("self", new Uri("/persons")));
-
-            return a;
+            return buildAccount();
         }
 
 		[HttpGet]
@@ -43,10 +25,10 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
         public IEnumerable<Account> GetAccounts()
 		{
             List<Account> accounts = new List<Account>() { 
-                new Account() { AccountId = 1, FirstName = "Joe", LastName = "Zhang", Age ="13"} ,
-                new Account() { AccountId = 2, FirstName = "Jenner", LastName = "Wang" },
-                new Account() { AccountId = 3, FirstName = "Joe", LastName = "Zhang" }
-            };
+                buildAccount() ,
+                buildAccount(),
+				buildAccount(),
+			};
 
             return accounts;
         }
@@ -55,17 +37,44 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
 		[Route("accounts")]
 		public JaDocument GetAccounts1()
 		{
-			List<Account> accounts = new List<Account>() {
-				new Account() { AccountId = 1, FirstName = "Joe", LastName = "Zhang"} ,
-				new Account() { AccountId = 2, FirstName = "Jenner", LastName = "Wang" },
-				new Account() { AccountId = 3, FirstName = "Joe", LastName = "Zhang" }
+    		List<Account> accounts = new List<Account>() {
+				buildAccount() ,
+				buildAccount(),
+				buildAccount(),
 			};
 
             JaDocument jd = new JaDocument(accounts);
 
             jd.Meta.Add("total-counts", accounts.Count);
 
+            jd.OfLink(new JaSimpleLink("self", new Uri("/abc")));
+            jd.OfLink(new JaSimpleLink("related", new Uri("/abc")));
+            jd.OfLink(new JaSimpleLink("new", new Uri("/abc")));
+
 			return jd;
 		}
+
+        private Account buildAccount(){
+			Account a = new Account()
+			{
+                AccountId = new Random().Next(),
+				FirstName = "Joe",
+				LastName = "Zhang"
+			};
+
+            a.OfLink(new AccountLink("accounts") { Href = new Uri("/accounts"), Method = "get", Test="test" });
+
+			a.Persons = new List<Person>()
+			{
+				new Person(){PersonId = new Random().Next(), Name="Lele"},
+				new Person(){PersonId = new Random().Next(), Name="Lele1"},
+			};
+
+			Person p = new Person() { PersonId = new Random().Next(), Name = "Lele2" };
+
+			p.Links.Add(new JaSimpleLink("self", new Uri("/persons")));
+
+            return a;
+        }
     }
 }

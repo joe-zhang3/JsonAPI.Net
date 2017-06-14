@@ -1,7 +1,5 @@
 ﻿{
-  'data': '{{data}}',
-  "meta" :  '{{meta}}',
-  'links': {
-    'self': 'something'
-  }
+  'data': '',
+  "meta" :  '',
+  'links': ''
 }

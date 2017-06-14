@@ -20,7 +20,7 @@ namespace JsonAPI.Net
             this.name = name;
         }
 
-        public virtual JToken Build(JaBuilder builder, string temnplate = null){
+        public virtual JToken Build(JaBuilderContext context){
             throw new NotImplementedException();
         }
 

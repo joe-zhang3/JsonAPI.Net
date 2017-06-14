@@ -12,5 +12,6 @@ namespace JsonAPI.Net.WebAPI.Resource
         }
 
         public string Method { get; set; }
+        public string Test { get; set; }
     }
 }

@@ -18,10 +18,7 @@ namespace JsonAPI.Net
         public const string DEFAULT_RELATIONSHIP_NAME = "relationships";
         public const string DEFAULT_RELATIONSHIP = @"
         {
-            'links' : {
-                'self' : '',
-                'related' : ''
-            },
+            'links' : '{{related_links}}',
             'data' : {'type' :'', 'id': ''}
         } ";
 

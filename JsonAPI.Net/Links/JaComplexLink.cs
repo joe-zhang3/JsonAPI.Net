@@ -5,7 +5,7 @@ namespace JsonAPI.Net
 {
     public class JaComplexLink : JaLink
     {
-        public override JToken Build(JaBuilder builder, string temnplate = null)
+        public override JToken Build(JaBuilderContext context)
         {
             JObject jb = new JObject();
 
@@ -13,7 +13,7 @@ namespace JsonAPI.Net
 
                 if (property.Name.Equals("name", StringComparison.CurrentCultureIgnoreCase)) continue;
 
-                jb.Add(property.Name.ToLower(), builder.GetPropertyValue(property.Name, this));
+                jb.Add(property.Name.ToLower(), context.GetPropertyValue(property.Name, this));
             }
 
             return new JProperty(Name, jb);

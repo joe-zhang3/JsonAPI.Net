@@ -51,7 +51,9 @@ namespace JsonAPI.Net
 
                 if (configuration.TemplateName != null) jaDoc.OfTemplate(configuration.TemplateName);
 
-                jaDoc.Build(getBuilder()).WriteTo(writer);
+                jaDoc.Build(new JaBuilderContext(){
+                    MasterTemplate = configuration.TemplateName
+                }).WriteTo(writer);
 
             }catch(Exception e){
                  throw e;
