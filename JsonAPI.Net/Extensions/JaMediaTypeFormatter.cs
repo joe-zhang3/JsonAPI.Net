@@ -34,7 +34,7 @@ namespace JsonAPI.Net
         {
             if (!(value is IResource || value is IEnumerable<IResource>)) await base.WriteToStreamAsync(type, value, writeStream, content, transportContext);
 
-            string result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(new JaConfiguration(message)));
+            string result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(new JaMessage(message)));
 
             using(var writter = new StreamWriter(writeStream)){
                 await writter.WriteAsync(result);

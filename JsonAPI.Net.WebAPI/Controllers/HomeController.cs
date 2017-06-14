@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
-namespace FlexibleJsonAPI.WebAPI.Controllers
+namespace JsonAPI.Net.WebAPI
 {
     public class HomeController : Controller
     {

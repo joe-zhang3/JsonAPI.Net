@@ -1,1 +1,1 @@
-﻿<%@ Application Inherits="FlexibleJsonAPI.WebAPI.Global" %>
+﻿<%@ Application Inherits="JsonAPI.Net.WebAPI.Global" %>

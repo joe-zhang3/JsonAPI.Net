@@ -85,7 +85,7 @@
     <Compile Include="Attributes\JaActionAttribute.cs" />
     <Compile Include="Builder\JaBuilder.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
-    <Compile Include="JaConfiguration.cs" />
+    <Compile Include="JaMessage.cs" />
     <Compile Include="Attributes\JaBuilderAttribute.cs" />
     <Compile Include="JaResourceBase.cs" />
     <Compile Include="JaDocument.cs" />
@@ -103,6 +103,9 @@
     <Compile Include="Builder\JaBuilderFactory.cs" />
     <Compile Include="Builder\JaResourceBuilder.cs" />
     <Compile Include="Builder\JaEnumerableRelationshipBuilder.cs" />
+    <Compile Include="JaConfiguration.cs" />
+    <Compile Include="Builder\JaCustomBuilder.cs" />
+    <Compile Include="Builder\ICustomBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

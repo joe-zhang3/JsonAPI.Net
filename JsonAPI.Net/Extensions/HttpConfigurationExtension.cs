@@ -5,14 +5,20 @@ namespace JsonAPI.Net
 {
     public static class HttpConfigurationExtension
     {
-        public static void ConfigureJsonAPI(this HttpConfiguration configuration, string templatePath){
-
+        public static void ConfigureJsonAPI(this HttpConfiguration configuration, Action<JaConfiguration> action)
+		{
             configuration.Formatters.Clear();
-            configuration.Formatters.Insert(0, new JaMediaTypeFormatter());
+			configuration.Formatters.Insert(0, new JaMediaTypeFormatter());
 
-            JaBuilderFactory.Initialize();
+            JaConfiguration config = new JaConfiguration(); 
 
-            JaTemplates.Intialize(templatePath);
-        }
+            if(action != null){
+                action.Invoke(config);
+            }
+
+            JaBuilderFactory.Initialize(config);
+
+            JaTemplates.Intialize(config.TemplateDirectory ?? Constants.DEFAULT_TEMPLATE_PATH);
+		}
     }
 }

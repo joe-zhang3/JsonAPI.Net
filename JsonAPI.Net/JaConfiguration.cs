@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
+using System.Collections.Generic;
 
 namespace JsonAPI.Net
 {
     public class JaConfiguration
     {
-        public JaConfiguration(HttpRequestMessage message)
-        {
-            if(message.Properties.ContainsKey(Constants.MASTER_TEMPLATE_NAME)){
-                TemplateName = message.Properties[Constants.MASTER_TEMPLATE_NAME].ToString();
-            }
+        private IList<ICustomBuilder> builders;
 
-            if(message.Properties.ContainsKey(Constants.JA_BUILDER)){
-                Builder = (JaBuilder)message.Properties[Constants.JA_BUILDER];
-            }
+        internal IList<ICustomBuilder> GetBuilders(){
+            return builders;
         }
+        public string TemplateDirectory { get; set; }
 
-        public string TemplateName { get; set; }
-        public JaBuilder Builder { get; set; }
+        public JaConfiguration RegisterTypeBuilder(ICustomBuilder builder){
+            if(builders == null) builders = new List<ICustomBuilder>();
+
+            builders.Add(builder);
+
+            return this;
+        }
     }
 }

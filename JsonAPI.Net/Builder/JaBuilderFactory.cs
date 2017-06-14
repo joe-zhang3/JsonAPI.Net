@@ -6,6 +6,7 @@ namespace JsonAPI.Net
 {
     public enum JaBuilderType{
         Default,
+        Custom,
         Uri,
         Dictionary,
         Enumerable,
@@ -19,16 +20,26 @@ namespace JsonAPI.Net
 
         private IBuilder defaultBuilder;
         private IDictionary<JaBuilderType, IBuilder> builders;
+        private IDictionary<Type, IBuilder> customBuilder;
 
-        private JaBuilderFactory(IDictionary<JaBuilderType, IBuilder> customBuilder = null){
-            builders = customBuilder ?? new Dictionary<JaBuilderType, IBuilder>();
-			defaultBuilder = new JaDefaultBuilder();
+        private JaBuilderFactory(JaConfiguration configuration){
+            builders = new Dictionary<JaBuilderType, IBuilder>();
+            ParseCustomBuilder(configuration);
+            defaultBuilder = new JaDefaultBuilder();
         }
 
-        public static void Initialize(IDictionary<JaBuilderType, IBuilder> customBuilder = null){
+        private void ParseCustomBuilder(JaConfiguration configuration){
 
+            customBuilder = new Dictionary<Type, IBuilder>();
+
+            foreach(var builder in configuration?.GetBuilders()){
+                customBuilder.Add(builder.CustomType, builder);
+            }
+        }
+
+        public static void Initialize(JaConfiguration configuration){
             if (factory == null){
-                factory = new JaBuilderFactory(customBuilder);
+                factory = new JaBuilderFactory(configuration);
             }
         }
 
@@ -37,6 +48,15 @@ namespace JsonAPI.Net
         }
 
         private IBuilder GetBuilderInternal(Type type, bool buildingRelationship = false){
+
+            if(type.IsPrimitive()){
+
+                bool? hasBuilder = customBuilder?.ContainsKey(type);
+
+                if(hasBuilder.HasValue && hasBuilder.Value){
+                    return customBuilder[type];
+                }
+            }
 
             if (type == typeof(Uri)){
                 return TryToGetBuilder(JaBuilderType.Uri);

@@ -7,7 +7,7 @@ using System.Web.Http;
 using JsonAPI.Net.WebAPI.Resource;
 using JsonAPI.Net;
 
-namespace FlexibleJsonAPI.WebAPI.Controllers
+namespace JsonAPI.Net.WebAPI
 {
     [RoutePrefix("test")]
     public class TestController : ApiController
@@ -16,7 +16,6 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
         [Route("account/{id:int}")]
         [JaAction(masterTemplate:"Master")]
         public Account GetAccount(int id){
-
             return buildAccount();
         }
 
