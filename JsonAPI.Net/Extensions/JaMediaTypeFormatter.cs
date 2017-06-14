@@ -7,6 +7,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace JsonAPI.Net
 {
@@ -34,16 +35,27 @@ namespace JsonAPI.Net
         {
             if (!(value is IResource || value is IEnumerable<IResource>)) await base.WriteToStreamAsync(type, value, writeStream, content, transportContext);
 
-            string result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(new JaConfiguration(message)));
+            string result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(new JaMessage(message)));
 
             using(var writter = new StreamWriter(writeStream)){
                 await writter.WriteAsync(result);
             }
         }
 
-        public override Task<object> ReadFromStreamAsync(Type type, Stream readStream, HttpContent content, IFormatterLogger formatterLogger)
+        public override async Task<object> ReadFromStreamAsync(Type type, Stream readStream, HttpContent content, IFormatterLogger formatterLogger)
         {
-            return base.ReadFromStreamAsync(type, readStream, content, formatterLogger);
+			using (var reader = new StreamReader(readStream))
+			{
+				try
+				{
+					var json = JToken.Parse(await reader.ReadToEndAsync());
+                    return JaResourceBase.Deserialize(json).ToObject(type);
+				}
+                catch (Exception e)
+				{
+                    throw e; //debug purpose
+				}
+			}
         }
 
         public override MediaTypeFormatter GetPerRequestFormatterInstance(Type type, HttpRequestMessage request, MediaTypeHeaderValue mediaType)

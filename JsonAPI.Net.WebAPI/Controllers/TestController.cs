@@ -7,7 +7,7 @@ using System.Web.Http;
 using JsonAPI.Net.WebAPI.Resource;
 using JsonAPI.Net;
 
-namespace FlexibleJsonAPI.WebAPI.Controllers
+namespace JsonAPI.Net.WebAPI
 {
     [RoutePrefix("test")]
     public class TestController : ApiController
@@ -16,9 +16,29 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
         [Route("account/{id:int}")]
         [JaAction(masterTemplate:"Master")]
         public Account GetAccount(int id){
-
             return buildAccount();
         }
+
+        [HttpPost]
+        [Route("account")]
+        public State CreateAccount(Account account)
+		{
+            Account a = account;
+
+            a.State.Name = "accepted";
+
+            return a.State;
+		}
+		[HttpPost]
+		[Route("states")]
+		public State CreateState(List<State> states)
+		{
+            foreach(var state in states)
+            {
+                
+            }
+			return null;
+		}
 
 		[HttpGet]
 		[Route("account")]
@@ -59,7 +79,8 @@ namespace FlexibleJsonAPI.WebAPI.Controllers
 			{
                 AccountId = new Random().Next(),
 				FirstName = "Joe",
-				LastName = "Zhang"
+				LastName = "Zhang",
+                State = new State(){StateId = 1, Address="China", Name="MyState"}
 			};
 
             a.OfLink(new AccountLink("accounts") { Href = new Uri("/accounts"), Method = "get", Test="test" });

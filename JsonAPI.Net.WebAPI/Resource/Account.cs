@@ -17,16 +17,16 @@ namespace JsonAPI.Net.WebAPI.Resource
 
         public override string Id
         {
-            get
-            {
+            get{
                 return AccountId.ToString();
             }
+            set { AccountId = int.Parse(value); }
         }
 
         public int AccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Age { get; set; }
+        public int Age { get; set; }
 
         public State State { get; set; }
 

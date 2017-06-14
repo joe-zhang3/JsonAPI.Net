@@ -5,7 +5,7 @@ namespace JsonAPI.Net
 {
     public class JaComplexLink : JaLink
     {
-        public override JToken Build(JaBuilderContext context)
+        public override JToken Serialize(JaBuilderContext context)
         {
             JObject jb = new JObject();
 

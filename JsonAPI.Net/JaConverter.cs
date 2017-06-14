@@ -8,9 +8,9 @@ namespace JsonAPI.Net
 {
     internal class JaConverter : JsonConverter
     {
-        private JaConfiguration configuration = null;
+        private JaMessage configuration = null;
 
-        public JaConverter(JaConfiguration configuration){
+        public JaConverter(JaMessage configuration){
             this.configuration = configuration;
         }
 
@@ -51,17 +51,13 @@ namespace JsonAPI.Net
 
                 if (configuration.TemplateName != null) jaDoc.OfTemplate(configuration.TemplateName);
 
-                jaDoc.Build(new JaBuilderContext(){
+                jaDoc.Serialize(new JaBuilderContext(){
                     MasterTemplate = configuration.TemplateName
                 }).WriteTo(writer);
 
             }catch(Exception e){
                  throw e;
             }
-        }
-
-        private JaBuilder getBuilder(){
-            return configuration.Builder ?? new JaBuilder();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

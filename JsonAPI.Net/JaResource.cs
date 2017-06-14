@@ -13,7 +13,7 @@ namespace JsonAPI.Net
 
     public abstract class JaResource : JaResourceBase, IResource, ICacheable
     {
-        public override JToken Build(JaBuilderContext context)
+        public override JToken Serialize(JaBuilderContext context)
 		{
             JObject template = JaTemplates.GetTemplate(context.TemplateName ?? Type.Pascalize());
 

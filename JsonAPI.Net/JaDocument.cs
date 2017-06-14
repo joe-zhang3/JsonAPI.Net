@@ -20,7 +20,7 @@ namespace JsonAPI.Net
             this.resources.Add(resource);
 		}
 
-        public override JToken Build(JaBuilderContext context){
+        public override JToken Serialize(JaBuilderContext context){
 
             JObject masterTemplate = GetMasterTemplate(context.MasterTemplate);
 
@@ -34,7 +34,12 @@ namespace JsonAPI.Net
                 }else if(property.Name.Equals("included")){
                     property.Value = context.BuildIncludedResources();                    
                 } else{
-                    JToken jt = context.GetPropertyValue(property.EvaulationKey(), this);
+
+                    string key = property.EvaulationKey();
+
+                    if (key == null) continue;
+
+                    JToken jt = context.GetPropertyValue(key, this);
 
                     if(jt == null || jt.IsEmpty()){
                         propertiesNeedToRemove.Add(property.Name);
@@ -55,12 +60,12 @@ namespace JsonAPI.Net
                 JArray array = new JArray();
 
                 resources.ForEach(r => {
-                    array.Add(r.Build(context));
+                    array.Add(r.Serialize(context));
                 });
 
                 return array;
             }else{
-                return resources.First().Build(context);
+                return resources.First().Serialize(context);
             }
         }
 

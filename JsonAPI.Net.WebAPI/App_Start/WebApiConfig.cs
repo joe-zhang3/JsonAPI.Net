@@ -2,7 +2,7 @@
 using System.Net.Http.Formatting;
 using JsonAPI.Net;
 
-namespace FlexibleJsonAPI.WebAPI
+namespace JsonAPI.Net.WebAPI
 {
     public static class WebApiConfig
     {
@@ -19,7 +19,10 @@ namespace FlexibleJsonAPI.WebAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.ConfigureJsonAPI("Templates");
+            config.ConfigureJsonAPI(c => {
+                c.TemplateDirectory = "Templates";
+                c.RegisterTypeBuilder(new IntBuilder());
+            });
         }
     }
 }

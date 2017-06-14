@@ -8,7 +8,7 @@ namespace JsonAPI.Net
         public JaBuilderType BuilderType { get { return JaBuilderType.Resource; } }
         public JToken Build(JaBuilderContext context){
             context.AddIncludedResources((IResource)context.Value);
-            return ((IResource)context.Value).Build(context);
+            return ((IResource)context.Value).Serialize(context);
         }
     }
 }

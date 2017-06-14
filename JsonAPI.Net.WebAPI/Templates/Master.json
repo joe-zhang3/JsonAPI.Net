@@ -1,5 +1,6 @@
 ﻿{
   'data': '',
   "meta" :  '',
-  'links': ''
+  'links': '',
+  "jsonapi" : '1.1'
 }

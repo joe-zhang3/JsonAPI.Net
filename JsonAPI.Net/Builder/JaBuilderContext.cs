@@ -35,7 +35,7 @@ namespace JsonAPI.Net
 			{
 				foreach (var r in includedResources)
 				{
-					ja.Add(r.Build(this));
+					ja.Add(r.Serialize(this));
 				}
 			}
 
