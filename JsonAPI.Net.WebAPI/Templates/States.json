@@ -1,6 +1,8 @@
 ﻿{
-  'data': {
-    "id": "{{StateId}}",
-    "type": "state",
+  "id": "",
+  "type": "",
+  "attributes": {
+    "address": '',
+    "name" : ''
   }
 }

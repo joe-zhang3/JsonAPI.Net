@@ -12,15 +12,13 @@ namespace JsonAPI.Net
             {
                 'data' : '',
                 'links' : '',
-                'meta' : ''
+                'meta' : '',
+                'included' : ''
             }";
         public const string DEFAULT_RELATIONSHIP_NAME = "relationships";
         public const string DEFAULT_RELATIONSHIP = @"
         {
-            'links' : {
-                'self' : '',
-                'related' : ''
-            },
+            'links' : '{{related_links}}',
             'data' : {'type' :'', 'id': ''}
         } ";
 

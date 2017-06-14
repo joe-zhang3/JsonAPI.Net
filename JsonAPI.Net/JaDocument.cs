@@ -20,20 +20,21 @@ namespace JsonAPI.Net
             this.resources.Add(resource);
 		}
 
-        public override JToken Build(JaBuilder builder, string templateName){
+        public override JToken Build(JaBuilderContext context){
 
-            JObject masterTemplate = GetMasterTemplate(templateName);
+            JObject masterTemplate = GetMasterTemplate(context.MasterTemplate);
 
             if (masterTemplate == null) throw new Exception("Template of master cannot be empty");
 
             List<string> propertiesNeedToRemove = new List<string>(); 
 
             foreach(var property in masterTemplate.Properties()){
-
-                if(property.Name.Equals("data", StringComparison.CurrentCultureIgnoreCase)){
-                    property.Value = BuildData(builder);
-                }else{
-                    JToken jt = builder.GetPropertyValue(property.EvaulationKey(), this);
+                if (property.Name.Equals("data", StringComparison.CurrentCultureIgnoreCase)){
+                    property.Value = BuildData(context);
+                }else if(property.Name.Equals("included")){
+                    property.Value = context.BuildIncludedResources();                    
+                } else{
+                    JToken jt = context.GetPropertyValue(property.EvaulationKey(), this);
 
                     if(jt == null || jt.IsEmpty()){
                         propertiesNeedToRemove.Add(property.Name);
@@ -48,18 +49,18 @@ namespace JsonAPI.Net
             return masterTemplate;
         }
 
-        private JToken BuildData(JaBuilder builder){
+        private JToken BuildData(JaBuilderContext context){
             
             if(CompoundDocuments || resources.Count > 1){
                 JArray array = new JArray();
 
                 resources.ForEach(r => {
-                    array.Add(r.Build(builder));
+                    array.Add(r.Build(context));
                 });
 
                 return array;
             }else{
-                return resources.First().Build(builder);
+                return resources.First().Build(context);
             }
         }
 
@@ -74,5 +75,10 @@ namespace JsonAPI.Net
 				return JObject.Parse(Constants.DEFAULT_MASTER);
 			}
 		}
+
+        public override IList<ILink> BuildDefaultLinks()
+        {
+            return null;
+        }
     }
 }

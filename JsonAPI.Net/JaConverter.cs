@@ -51,16 +51,17 @@ namespace JsonAPI.Net
 
                 if (configuration.TemplateName != null) jaDoc.OfTemplate(configuration.TemplateName);
 
-                jaDoc.Build(getBuilder()).WriteTo(writer);
+                jaDoc.Build(new JaBuilderContext(){
+                    MasterTemplate = configuration.TemplateName
+                }).WriteTo(writer);
 
             }catch(Exception e){
-                //debug purpose
                  throw e;
             }
         }
 
         private JaBuilder getBuilder(){
-            return configuration.Builder ?? JaBuilder.GetInstance();
+            return configuration.Builder ?? new JaBuilder();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

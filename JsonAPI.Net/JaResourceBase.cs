@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Humanizer;
 using Newtonsoft.Json.Linq;
@@ -11,11 +12,29 @@ namespace JsonAPI.Net
 
         public virtual string Id { get; }
 
-		private IDictionary<string, object> meta = new Dictionary<string, object>();
-		private ICollection<ILink> links = new List<ILink>();
+        private ICollection<ILink> links;
+        private ICollection<ILink> relatedLinks;
 
+		private IDictionary<string, object> meta = new Dictionary<string, object>();
+		
 		public IDictionary<string, object> Meta { get { return meta; } }
-        public ICollection<ILink> Links { get { return links; } }
+        public virtual ICollection<ILink> Links { 
+            get {
+                return links ?? BuildDefaultLinks();
+            } 
+        }
+
+        /// <summary>
+        /// Called for building links when this resource is referenced by others 
+        /// </summary>
+        /// <value>The related links.</value>
+		public ICollection<ILink> RelatedLinks
+		{
+			get
+			{
+				return relatedLinks ?? BuildDefaultLinks() ;
+			}
+		} 
 
         protected string tempName;
         protected string type ;
@@ -40,6 +59,30 @@ namespace JsonAPI.Net
 			this.url = url;
 			return this;
 		}
+
+        public void OfLink(ILink link){
+            if (links == null) links = new List<ILink>();
+
+            links.Add(link);
+        }
+
+		/// <summary>
+		/// Override with your links collection
+		/// </summary>
+		/// <returns>The links.</returns>
+        public virtual void OfRelatedLinks(ICollection<ILink> links)
+		{
+            this.relatedLinks = links;
+		}
+
+        /// <summary>
+        /// Override with your customized self link
+        /// </summary>
+        /// <returns>The self link.</returns>
+        public virtual IList<ILink> BuildDefaultLinks(){
+            return new List<ILink>() { new JaSimpleLink("self", new Uri($"/{ url ?? Type }/{Id ?? string.Empty}")) };
+        }
+
 		/// <summary>
 		/// By default, the type is the Pluralize of the class name
 		/// </summary>
@@ -54,26 +97,9 @@ namespace JsonAPI.Net
 			}
 		}
 
-
-        public virtual Uri Self
-		{
-			get
-			{
-				if (url != null) return new Uri($"{url}/{Id ?? ""}");
-
-				return new Uri($"/{Type}/{Id}");
-			}
-		}
-
-
-		public JToken Build(JaBuilder builder)
-		{
-			return Build(builder, tempName);
-		}
-
-        public virtual JToken Build(JaBuilder builder, string templateName){
+		public virtual JToken Build(JaBuilderContext context){
             throw new NotImplementedException();
-        }
+		}
 
         public JContainer GetContainer(){
             return new JArray();

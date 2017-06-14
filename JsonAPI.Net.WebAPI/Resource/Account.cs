@@ -12,7 +12,7 @@ namespace JsonAPI.Net.WebAPI.Resource
     {
         public Account()
         {
-            OfURL("/customers/accounts");
+            OfURL("customers/accounts");
         }
 
         public override string Id

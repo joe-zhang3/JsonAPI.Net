@@ -75,7 +75,6 @@
     <Compile Include="Extensions\HttpConfigurationExtension.cs" />
     <Compile Include="Attributes\JaTemplateAttribute.cs" />
     <Compile Include="Extensions\JaMediaTypeFormatter.cs" />
-    <Compile Include="Builder\JaDocument.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
@@ -85,20 +84,32 @@
     <Compile Include="IResource.cs" />
     <Compile Include="Attributes\JaActionAttribute.cs" />
     <Compile Include="Builder\JaBuilder.cs" />
-    <Compile Include="JaLink.cs" />
-    <Compile Include="ILink.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="JaConfiguration.cs" />
     <Compile Include="Attributes\JaBuilderAttribute.cs" />
     <Compile Include="JaResourceBase.cs" />
-    <Compile Include="JaSimpleLink.cs" />
-    <Compile Include="JaComplexLink.cs" />
+    <Compile Include="JaDocument.cs" />
+    <Compile Include="Builder\IBuilder.cs" />
+    <Compile Include="Builder\JaDefaultBuilder.cs" />
+    <Compile Include="Builder\EmptyClass.cs" />
+    <Compile Include="Builder\JaDictionaryBuilder.cs" />
+    <Compile Include="Builder\JaEnumerableBuilder.cs" />
+    <Compile Include="Builder\JaBuilderContext.cs" />
+    <Compile Include="Links\ILink.cs" />
+    <Compile Include="Links\JaComplexLink.cs" />
+    <Compile Include="Links\JaLink.cs" />
+    <Compile Include="Links\JaSimpleLink.cs" />
+    <Compile Include="Builder\JaUrlBuilder.cs" />
+    <Compile Include="Builder\JaBuilderFactory.cs" />
+    <Compile Include="Builder\JaResourceBuilder.cs" />
+    <Compile Include="Builder\JaEnumerableRelationshipBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builder\" />
+    <Folder Include="Links\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

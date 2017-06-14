@@ -10,6 +10,8 @@ namespace JsonAPI.Net
             configuration.Formatters.Clear();
             configuration.Formatters.Insert(0, new JaMediaTypeFormatter());
 
+            JaBuilderFactory.Initialize();
+
             JaTemplates.Intialize(templatePath);
         }
     }

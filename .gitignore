@@ -1,1 +1,10 @@
-/bin/
+# user-specific files
+*.userprefs
+*.suo
+*.user
+
+# ignore folders below
+[Bb]in/
+packages/
+[Oo]bj/
+

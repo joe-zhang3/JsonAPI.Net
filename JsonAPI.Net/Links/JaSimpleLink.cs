@@ -4,7 +4,12 @@ namespace JsonAPI.Net
 {
     public class JaSimpleLink : JaLink
     {
-        public override JToken Build(JaBuilder builder, string temnplate = null)
+        public JaSimpleLink(string name, Uri href){
+            OfName(name);
+            Href = href;
+        }
+
+        public override JToken Build(JaBuilderContext context)
         {
             return new JProperty(Name, Href.AbsolutePath);
         }
