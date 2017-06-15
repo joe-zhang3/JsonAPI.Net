@@ -21,7 +21,7 @@ When you have a json template, what you need to do is try to fill those values w
 
 
 ## License
-This is under MIT license, so enjoy yourself.
+This is under MIT license.
 
 
 
