@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Net;
+using System.Web.Http;
 using Newtonsoft.Json.Linq;
 
 namespace JsonAPI.Net
@@ -8,11 +10,25 @@ namespace JsonAPI.Net
     {
         private JObject template;
 
+        public JaError(HttpError error):this(){
+
+            Title = "An unexpected error occurs";
+
+            StringBuilder sb = new StringBuilder(error.Count); 
+
+            foreach(var kv in error){
+                sb.AppendLine($"{kv.Key} - {kv.Value.ToString()}");
+            }
+            Detail = sb.ToString();
+
+            StatusCode = HttpStatusCode.InternalServerError;
+        }
+
         public JaError(){
             template = JaTemplates.GetTemplate(Constants.ERROR_TEMPLATE_NAME);
         }
 
-        public HttpStatusCode Status { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string Title { get; set; }
         public string Detail { get; set; }
 

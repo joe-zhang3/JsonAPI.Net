@@ -5,11 +5,11 @@ using System.Web.Http.Filters;
 namespace JsonAPI.Net
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class JaActionTemplateAttribute : ActionFilterAttribute
+    public class JaResourceTemplateAttribute : ActionFilterAttribute
     {
         private string template;
 
-        public JaActionTemplateAttribute(string masterTemplate){
+        public JaResourceTemplateAttribute(string masterTemplate){
             this.template = masterTemplate;
         }
 

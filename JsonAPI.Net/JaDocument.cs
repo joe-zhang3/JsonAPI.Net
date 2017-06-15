@@ -21,6 +21,11 @@ namespace JsonAPI.Net
             CheckError();
 		}
 
+        public void AddError(JaError error){
+            hasError = true;
+            this.resources?.Add(error);
+        }
+
         /// <summary>
         /// Set template for each resource as their template might be differnt from their own one.
         /// 
@@ -38,7 +43,7 @@ namespace JsonAPI.Net
         }
 
         private void CheckError(){
-            hasError = resources.Any(r => r is JaError);
+            hasError = hasError || resources.Any(r => r is JaError);
         }
 
         public override JToken Serialize(JaBuilderContext context){
@@ -83,14 +88,16 @@ namespace JsonAPI.Net
             return BuildResources(context, resources);
         }
 
-        private JToken BuildResources(JaBuilderContext context, ICollection<IResource> items, bool forceToUseArray = false)
-        {
+        private JToken BuildResources(JaBuilderContext context, ICollection<IResource> items, bool forceToUseArray = false){
             if (items == null) return null;
 
-			if (items.Count > 1 || forceToUseArray){
+            if (items.Count > 1 || forceToUseArray || hasError){
 				JArray array = new JArray();
 
                 foreach(var item in items){
+
+                    if (hasError && !(item is JaError)) continue; //make sure error and data are not co-existed.
+
                     array.Add(item.Serialize(context));
                 }
 

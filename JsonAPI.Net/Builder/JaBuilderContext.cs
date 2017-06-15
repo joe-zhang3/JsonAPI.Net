@@ -35,6 +35,8 @@ namespace JsonAPI.Net
 
             if (includedResources == null) includedResources = new List<IResource>();
 
+            if (includedResources.Any(n => n.Equals(resource))) return;
+
 			includedResources.Add(resource);
 		}
 

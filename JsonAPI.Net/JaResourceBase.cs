@@ -157,5 +157,21 @@ namespace JsonAPI.Net
 
             return obj;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+
+            JaResourceBase jb = obj as JaResourceBase;
+
+            if (jb == null) return false;
+
+            return Id.Equals(jb.Id) && Type.Equals(jb.Type);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() ^ Type.GetHashCode();
+        }
     }
 }

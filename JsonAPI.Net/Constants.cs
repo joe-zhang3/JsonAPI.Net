@@ -13,10 +13,12 @@ namespace JsonAPI.Net
 
         public const string DEFAULT_TEMPLATE_PATH = "Templates";
 
+        public const string HAS_ERROR = "has_error";
+
         public const string ERROR_TEMPLATE_NAME = "Error";
 		public const string DEFAULT_ERROR_TEMPLATE = @"
         {
-            'status' : '',
+            'status-code' : '',
             'title' : '',
             'detail' : '',
         } ";

@@ -56,7 +56,7 @@ namespace JsonAPI.Net.WebAPI
 
 		[HttpGet]
 		[Route("accounts")]
-        [JaActionTemplate("AccountSearch")]
+        [JaResourceTemplate("AccountSearch")]
 		public JaDocument GetAccounts1()
 		{
     		List<Account> accounts = new List<Account>() {

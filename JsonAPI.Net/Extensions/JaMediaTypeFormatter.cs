@@ -22,18 +22,22 @@ namespace JsonAPI.Net
             SupportedMediaTypes.Add(new MediaTypeHeaderValue(Constants.MEDIA_TYPE));
         }
 
-        public override bool CanReadType(Type type)
-        {
+        public override bool CanReadType(Type type){
             return true;
         }
-        public override bool CanWriteType(Type type)
-        {
+        public override bool CanWriteType(Type type){
             return true;
         }
 
-        public override async Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext)
-        {
-             if (!(value is IResource || value is IEnumerable<IResource>)) await base.WriteToStreamAsync(type, value, writeStream, content, transportContext);
+        public override async Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext){
+
+            bool hasError = message.Properties.ContainsKey(Constants.HAS_ERROR);
+
+            if(hasError){
+                value = message.Properties[Constants.HAS_ERROR];
+            }
+
+            if (!(value is IResource || value is IEnumerable<IResource>)) await base.WriteToStreamAsync(type, value, writeStream, content, transportContext);
 
             string result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(message));
 

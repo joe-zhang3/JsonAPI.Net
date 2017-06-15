@@ -81,7 +81,7 @@
     <Compile Include="JaTemplates.cs" />
     <Compile Include="Extensions\JPropertyExtension.cs" />
     <Compile Include="IResource.cs" />
-    <Compile Include="Attributes\JaActionTemplateAttribute.cs" />
+    <Compile Include="Attributes\JaResourceTemplateAttribute.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="JaResourceBase.cs" />
     <Compile Include="JaDocument.cs" />
