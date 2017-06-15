@@ -3,15 +3,16 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace JsonAPI.Net
 {
     internal class JaConverter : JsonConverter
     {
-        private JaMessage configuration = null;
+        private HttpRequestMessage message = null;
 
-        public JaConverter(JaMessage configuration){
-            this.configuration = configuration;
+        public JaConverter(HttpRequestMessage message){
+            this.message = message;
         }
 
         public override bool CanConvert(Type objectType)
@@ -49,11 +50,9 @@ namespace JsonAPI.Net
                     jaDoc = new JaDocument(resources);
                 }
 
-                if (configuration.TemplateName != null) jaDoc.OfTemplate(configuration.TemplateName);
+                jaDoc.OfTemplate(message.GetTemplateName());
 
-                jaDoc.Serialize(new JaBuilderContext(){
-                    MasterTemplate = configuration.TemplateName
-                }).WriteTo(writer);
+                jaDoc.Serialize(new JaBuilderContext(message)).WriteTo(writer);
 
             }catch(Exception e){
                  throw e;

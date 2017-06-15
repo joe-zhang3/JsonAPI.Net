@@ -21,7 +21,7 @@ namespace JsonAPI.Net.WebAPI
 
             config.ConfigureJsonAPI(c => {
                 c.TemplateDirectory = "Templates";
-                c.RegisterTypeBuilder(new IntBuilder());
+                c.RegisterTypeBuilder(new ComplexBuilder());
             });
         }
     }

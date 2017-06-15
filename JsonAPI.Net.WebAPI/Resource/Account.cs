@@ -27,9 +27,21 @@ namespace JsonAPI.Net.WebAPI.Resource
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
+        public DateTime Date { get; set; }
+        public MyComplexObject Complex { get; set; }
 
         public State State { get; set; }
 
         public List<Person> Persons{get;set;}
+    }
+
+    public class MyComplexObject{
+        public string MyComplexObjectProperty1 { get; set; }
+        public string MyComplexObjectProperty2 { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("I am a complex object");
+        }
     }
 }

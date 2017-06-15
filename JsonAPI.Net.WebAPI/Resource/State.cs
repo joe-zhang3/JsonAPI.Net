@@ -1,5 +1,6 @@
 ﻿﻿using System;
 using JsonAPI.Net;
+using System.Collections.Generic;
 
 namespace JsonAPI.Net.WebAPI.Resource
 {

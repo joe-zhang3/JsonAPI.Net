@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
@@ -7,7 +8,13 @@ namespace JsonAPI.Net
 {
     public class JaBuilderContext
     {
-        public string MasterTemplate { get; set; }
+        private readonly HttpRequestMessage message;
+        public JaBuilderContext(HttpRequestMessage message){
+            this.message = message;
+        }
+
+        public HttpRequestMessage RequestMessage{ get { return message; }}
+
         public string TemplateName { get; set; }
 
         private ICollection<IResource> includedResources;
@@ -79,16 +86,14 @@ namespace JsonAPI.Net
 			}
 		}
 
-        private bool BuildingRelationships(){
-            return TemplateName != null && TemplateName.Equals(Constants.DEFAULT_RELATIONSHIP_NAME);
+        public JToken GetPropertyValue(string key, object value){
+            return GetPropertyValue(key, value, false);    
         }
-
-		public JToken GetPropertyValue(string key, object value)
+		public JToken GetPropertyValue(string key, object value, bool buildingRelationship)
 		{
 			if (value == null || key == null) return null;
 
-			if (key.Contains("."))
-			{
+			if (key.Contains(".")){
 				int dot = key.IndexOf('.');
 				string tempKey = key.Substring(0, dot);
 
@@ -98,7 +103,7 @@ namespace JsonAPI.Net
 
 				object tempValue = temp.GetValue(value);
 
-				return GetPropertyValue(key.Substring(dot + 1), tempValue);
+				return GetPropertyValue(key.Substring(dot + 1), tempValue, buildingRelationship);
 			}
 			else
 			{
@@ -108,7 +113,14 @@ namespace JsonAPI.Net
 
 				this.Value = pi.GetValue(value);
 
-                return Value != null ? pi.PropertyType.GetBuilder(BuildingRelationships()).Build(this) : null;
+                if (Value == null) return null;
+
+                if(buildingRelationship){
+                    Value = new JaRelationship(Value);
+                    return Value.GetType().GetBuilder().Build(this);
+                }
+
+                return pi.PropertyType.GetBuilder().Build(this);
 			}
 		}
     }

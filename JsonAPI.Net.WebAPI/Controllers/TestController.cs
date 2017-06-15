@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Http;
 using JsonAPI.Net.WebAPI.Resource;
 using JsonAPI.Net;
+using Newtonsoft.Json.Linq;
 
 namespace JsonAPI.Net.WebAPI
 {
@@ -75,11 +76,13 @@ namespace JsonAPI.Net.WebAPI
 		}
 
         private Account buildAccount(){
-			Account a = new Account()
-			{
+            Account a = new Account()
+            {
                 AccountId = new Random().Next(),
-				FirstName = "Joe",
-				LastName = "Zhang",
+                FirstName = "Joe",
+                LastName = "Zhang",
+                Complex = new MyComplexObject(),
+                Date = DateTime.Now,
                 State = new State(){StateId = 1, Address="China", Name="MyState"}
 			};
 
