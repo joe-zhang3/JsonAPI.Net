@@ -73,7 +73,6 @@
     <Compile Include="Cache\ICacheable.cs" />
     <Compile Include="Cache\MemoryCache.cs" />
     <Compile Include="Extensions\HttpConfigurationExtension.cs" />
-    <Compile Include="Attributes\JaTemplateAttribute.cs" />
     <Compile Include="Extensions\JaMediaTypeFormatter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -82,7 +81,7 @@
     <Compile Include="JaTemplates.cs" />
     <Compile Include="Extensions\JPropertyExtension.cs" />
     <Compile Include="IResource.cs" />
-    <Compile Include="Attributes\JaActionAttribute.cs" />
+    <Compile Include="Attributes\JaActionTemplateAttribute.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="JaResourceBase.cs" />
     <Compile Include="JaDocument.cs" />
@@ -102,8 +101,8 @@
     <Compile Include="Builder\JaCustomBuilder.cs" />
     <Compile Include="Builder\ICustomBuilder.cs" />
     <Compile Include="JaDelegatingHandler.cs" />
-    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="JaRelationship.cs" />
+    <Compile Include="JaError.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

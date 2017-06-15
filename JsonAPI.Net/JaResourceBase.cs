@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace JsonAPI.Net
 {
-    public class JaResourceBase 
+    public abstract class JaResourceBase 
     {
         public virtual string Id { get; set; }
 
@@ -34,7 +34,7 @@ namespace JsonAPI.Net
 			}
 		} 
 
-        protected string tempName;
+        protected string _templateName;
         protected string type ;
         protected string url;
 		/// <summary>
@@ -43,7 +43,7 @@ namespace JsonAPI.Net
 		/// <returns>The template.</returns>
 		/// <param name="templateName">Template name.</param>
 		public JaResourceBase OfTemplate(string templateName){
-			this.tempName = templateName;
+			this._templateName = templateName;
 			return this;
 		}
 
@@ -95,9 +95,15 @@ namespace JsonAPI.Net
 			}
 		}
 
-		public virtual JToken Serialize(JaBuilderContext context){
-            throw new NotImplementedException();
-		}
+        protected JObject GetTemplate(){
+            return GetTemplate(this._templateName ?? Type.Pascalize());
+        }
+
+        protected virtual JObject GetTemplate(string templateName){
+            return JaTemplates.GetTemplate(templateName);
+        }
+
+        public abstract JToken Serialize(JaBuilderContext context);
 
         public JContainer GetContainer(){
             return new JArray();
@@ -120,6 +126,7 @@ namespace JsonAPI.Net
                 return ParseObject(tmp);   
             }
         }
+
         /// <summary>
         /// Only parse id, attributes
         /// </summary>

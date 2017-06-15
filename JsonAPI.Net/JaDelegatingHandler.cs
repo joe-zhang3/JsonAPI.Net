@@ -17,6 +17,10 @@ namespace JsonAPI.Net
 
             //TODO Add error handling here.
 
+            var content = result.Content as ObjectContent;
+
+
+
             return result;
         }
     }
