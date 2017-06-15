@@ -12,14 +12,14 @@ namespace JsonAPI.Net
 
         public JaRelationship(object value){
             this.value = value;
-            template = JaTemplates.GetTemplate(Constants.DEFAULT_RELATIONSHIP_NAME);
+            template = JaTemplates.GetTemplate(Constants.RELATIONSHIP_TEMPLATE_NAME);
         }
 
         public JToken Serialize(JaBuilderContext context){
 
             foreach(var t in template.Properties()){
                 if(t.Name.Equals("data")){
-                    t.Value = BuildData();
+                    t.Value = BuildData(context);
                 }else{
                     string key = t.EvaulationKey();
 
@@ -40,26 +40,29 @@ namespace JsonAPI.Net
         }
 
 
-        private JToken BuildData(){
+        private JToken BuildData(JaBuilderContext context){
 
             var resouce = value as IEnumerable<IResource>;
 
 			if (resouce == null)
 			{
-				return SerializeSingleResource((IResource)value);
+				return SerializeSingleResource((IResource)value, context);
 			}
 			else
 			{
 				JArray ja = new JArray();
 				foreach (var r in resouce){
-					ja.Add(SerializeSingleResource(r));
+					ja.Add(SerializeSingleResource(r, context));
 				}
 
                 return ja;
 			}
 		}
 
-        private JToken SerializeSingleResource(IResource resource){
+        private JToken SerializeSingleResource(IResource resource, JaBuilderContext context){
+
+            context.AddIncludedResources(resource);
+
 			JObject jo = new JObject();
 			jo.Add("type", ((JaResourceBase)resource).Type);
 			jo.Add("id", ((JaResourceBase)resource).Id);

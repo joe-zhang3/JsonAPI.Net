@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
@@ -9,48 +10,37 @@ namespace JsonAPI.Net
     public class JaBuilderContext
     {
         private readonly HttpRequestMessage message;
-        public JaBuilderContext(HttpRequestMessage message){
-            this.message = message;
-        }
+        private string actionTemplate;
 
+        public JaBuilderContext(HttpRequestMessage message)
+        {
+            this.message = message;
+
+            object obj;
+
+            if (message.Properties.TryGetValue(Constants.ACTION_TEMPLATE, out obj)) actionTemplate = obj.ToString();
+        }
         public HttpRequestMessage RequestMessage{ get { return message; }}
 
-        public string TemplateName { get; set; }
+        public string ActionTemplate { get { return actionTemplate; } }
 
         private ICollection<IResource> includedResources;
 		private bool buildingIncludedResouce = false;
 
+        internal ICollection<IResource> IncludedResources{ get { return includedResources; }}
+
         public void AddIncludedResources(IResource resource)
 		{
-            if (!(resource is JaResource) || buildingIncludedResouce) return;
+            if (buildingIncludedResouce) return;
 
-			if (includedResources == null) includedResources = new List<IResource>();
+            if (includedResources == null) includedResources = new List<IResource>();
+
+            if (includedResources.Any(n => n.Equals(resource))) return;
 
 			includedResources.Add(resource);
 		}
 
         public object Value { get; set; }
-
-		public virtual JToken BuildIncludedResources()
-		{
-            TemplateName = null; //included resource does not need any template. user their own.
-            buildingIncludedResouce = true;
-
-			JArray ja = new JArray();
-
-			if (includedResources != null)
-			{
-				foreach (var r in includedResources)
-				{
-					ja.Add(r.Serialize(this));
-				}
-			}
-
-			buildingIncludedResouce = false;
-			includedResources?.Clear();
-
-			return ja;
-		}
 
 		public void Populate(JToken token, object inputResource)
 		{

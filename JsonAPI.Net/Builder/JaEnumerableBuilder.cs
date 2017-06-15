@@ -16,8 +16,7 @@ namespace JsonAPI.Net
 
 			foreach (var resource in elements)
 			{
-                context.AddIncludedResources(resource);
-				ja.Add(resource.Serialize(context));
+                ja.Add(resource.Serialize(context));
 			}
 
 			return ja;

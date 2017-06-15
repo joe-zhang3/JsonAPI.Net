@@ -15,12 +15,12 @@ namespace JsonAPI.Net
     {
         public override JToken Serialize(JaBuilderContext context)
 		{
-            JObject template = JaTemplates.GetTemplate(context.TemplateName ?? Type.Pascalize());
+            JObject template = GetTemplate();
 
             List<string> propertiesToRemove = new List<string>();
 
 			foreach (var property in template.Properties()){
-				if (property.Name.Equals(Constants.DEFAULT_RELATIONSHIP_NAME)){
+                if (property.Name.Equals(Constants.KEY_RELATIONSHIPS)){
                     JToken jt = BuildRelationships(property.Value, context);
 
 					if (jt == null || jt.IsEmpty()){

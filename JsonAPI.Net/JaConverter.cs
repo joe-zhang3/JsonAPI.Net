@@ -50,9 +50,9 @@ namespace JsonAPI.Net
                     jaDoc = new JaDocument(resources);
                 }
 
-                jaDoc.OfTemplate(message.GetTemplateName());
+                JaBuilderContext context = new JaBuilderContext(message);
 
-                jaDoc.Serialize(new JaBuilderContext(message)).WriteTo(writer);
+                jaDoc.Serialize(context).WriteTo(writer);
 
             }catch(Exception e){
                  throw e;

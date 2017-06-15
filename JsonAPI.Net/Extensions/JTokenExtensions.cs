@@ -8,6 +8,9 @@ namespace JsonAPI.Net
     public static class JTokenExtensions
     {
         public static bool IsEmpty(this JToken token){
+
+            if (token.Type == JTokenType.Null) return true;
+
             JArray array = token as JArray;
 
             if (array != null) return array.Count == 0;
