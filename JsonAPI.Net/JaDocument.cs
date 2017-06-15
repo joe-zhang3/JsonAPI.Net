@@ -11,6 +11,8 @@ namespace JsonAPI.Net
         private List<IResource> resources = new List<IResource>();
         private bool hasError;
 
+        public JaDocument(){}
+
         public JaDocument(IEnumerable<IResource> resources){
             this.resources.AddRange(resources);
             CheckError();
@@ -89,11 +91,10 @@ namespace JsonAPI.Net
         }
 
         private JToken BuildResources(JaBuilderContext context, ICollection<IResource> items, bool forceToUseArray = false){
-            if (items == null) return null;
+            if (items == null || items.Count() == 0) return null;
 
             if (items.Count > 1 || forceToUseArray || hasError){
-				JArray array = new JArray();
-
+                JArray array = new JArray(); 
                 foreach(var item in items){
 
                     if (hasError && !(item is JaError)) continue; //make sure error and data are not co-existed.

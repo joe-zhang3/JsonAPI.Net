@@ -2,6 +2,7 @@
 *.userprefs
 *.suo
 *.user
+*.DS_Store
 
 # ignore folders below
 [Bb]in/
