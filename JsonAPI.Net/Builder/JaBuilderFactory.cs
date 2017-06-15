@@ -10,8 +10,7 @@ namespace JsonAPI.Net
         Uri,
         Dictionary,
         Enumerable,
-        Resource,
-        EnumerableRelationships
+        Resource
     }
 
     public class JaBuilderFactory
@@ -43,19 +42,16 @@ namespace JsonAPI.Net
             }
         }
 
-        public static IBuilder GetBuilder(Type type, bool buildingRelationship = false){
-            return factory.GetBuilderInternal(type, buildingRelationship);
+        public static IBuilder GetBuilder(Type type){
+            return factory.GetBuilderInternal(type);
         }
 
-        private IBuilder GetBuilderInternal(Type type, bool buildingRelationship = false){
+        private IBuilder GetBuilderInternal(Type type){
+            
+            IBuilder builder;
 
-            if(type.IsPrimitive()){
-
-                bool? hasBuilder = customBuilder?.ContainsKey(type);
-
-                if(hasBuilder.HasValue && hasBuilder.Value){
-                    return customBuilder[type];
-                }
+            if(customBuilder.TryGetValue(type, out builder)){
+                return builder;
             }
 
             if (type == typeof(Uri)){
@@ -66,11 +62,7 @@ namespace JsonAPI.Net
 				if (typeof(IDictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()))
 				{
                     return TryToGetBuilder(JaBuilderType.Dictionary);
-				}
-                else if (typeof(IEnumerable<JaResource>).IsAssignableFrom(type))
-				{
-                     return TryToGetBuilder(buildingRelationship ? JaBuilderType.EnumerableRelationships : JaBuilderType.Enumerable);
-                }else{
+				} else{
                      return TryToGetBuilder(JaBuilderType.Enumerable);
                 }
 			}
@@ -98,9 +90,6 @@ namespace JsonAPI.Net
                     break;
                 case JaBuilderType.Resource:
                     builder = new JaResourceBuilder();
-                    break;
-                case JaBuilderType.EnumerableRelationships:
-                    builder = new JaEnumerableRelationshipBuilder();
                     break;
             }
 

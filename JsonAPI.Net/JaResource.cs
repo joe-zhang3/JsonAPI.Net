@@ -43,10 +43,9 @@ namespace JsonAPI.Net
             JObject jObject = relationships as JObject; //relationships must be a object
 
             List<string> propertiesToRemove = new List<string>();
-            context.TemplateName = Constants.DEFAULT_RELATIONSHIP_NAME;
 
 			foreach(var property in jObject.Properties()){ //need to know what need to be built
-                JToken jt = context.GetPropertyValue(property.Name.Pascalize(), this);
+                JToken jt = context.GetPropertyValue(property.Name.Pascalize(), this, true);
 
                 if(jt == null || jt.IsEmpty()){
                     propertiesToRemove.Add(property.Name);
@@ -54,8 +53,6 @@ namespace JsonAPI.Net
                     property.Value = jt;
                 }
             }
-
-            context.TemplateName = null; //reset the template name once the relationships is done.
 
             propertiesToRemove.ForEach(n => jObject.Remove(n));
 

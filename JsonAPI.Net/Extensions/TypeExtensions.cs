@@ -10,8 +10,8 @@ namespace JsonAPI.Net
             return ti.IsPrimitive || ti.IsValueType || (type == typeof(string));
         }
 
-        public static IBuilder GetBuilder(this Type type, bool buildingRelationship = false){
-            return JaBuilderFactory.GetBuilder(type, buildingRelationship);
+        public static IBuilder GetBuilder(this Type type){
+            return JaBuilderFactory.GetBuilder(type);
         }
     }
 }

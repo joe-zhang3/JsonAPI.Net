@@ -4,9 +4,10 @@
   'attributes': {
     'first-name': '',
     'last-name': '',
-    "age" :  ''
+    "age": '',
+    "date" :  '',
+    "complex" :  ''
   },
-  'links': '',
   "relationships": {
     "state": '',
     "persons" :  ''

@@ -16,6 +16,7 @@ namespace JsonAPI.Net
 		private IDictionary<string, object> meta = new Dictionary<string, object>();
 		
 		public IDictionary<string, object> Meta { get { return meta; } }
+
         public virtual ICollection<ILink> Links { 
             get {
                 return links ?? BuildDefaultLinks();
@@ -26,10 +27,9 @@ namespace JsonAPI.Net
         /// Called for building links when this resource is referenced by others 
         /// </summary>
         /// <value>The related links.</value>
-		public ICollection<ILink> RelatedLinks
+        public virtual ICollection<ILink> RelatedLinks
 		{
-			get
-			{
+			get{
 				return relatedLinks ?? BuildDefaultLinks() ;
 			}
 		} 

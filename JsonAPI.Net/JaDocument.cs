@@ -22,7 +22,7 @@ namespace JsonAPI.Net
 
         public override JToken Serialize(JaBuilderContext context){
 
-            JObject masterTemplate = GetMasterTemplate(context.MasterTemplate);
+            JObject masterTemplate = GetMasterTemplate();
 
             if (masterTemplate == null) throw new Exception("Template of master cannot be empty");
 
@@ -69,16 +69,9 @@ namespace JsonAPI.Net
             }
         }
 
-        private JObject GetMasterTemplate(string tempName)
+        private JObject GetMasterTemplate()
 		{
-            if (tempName != null )
-			{
-                return JaTemplates.GetTemplate(tempName);
-			}
-			else
-			{
-				return JObject.Parse(Constants.DEFAULT_MASTER);
-			}
+            return tempName == null ? JObject.Parse(Constants.DEFAULT_MASTER) : JaTemplates.GetTemplate(tempName);
 		}
 
         public override IList<ILink> BuildDefaultLinks()
