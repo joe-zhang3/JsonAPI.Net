@@ -7,14 +7,18 @@ The general idea is use a resource object to fill up a json schema. (Newsoft.Jso
 
 When you have a json template, what you need to do is try to fill those values with the resource object, which gives you a huge flexiblity to do whatever you want. 
 
-## usage
+## Usage
 
-1. Simply call the config.ConfigureJsonApi to inject the media type formatter. 
-2. A scanner will scan all .json files under the "Templates" folder and cache them.
+1. Simply call the config.ConfigureJsonApi method to do the initialization and injection.
+2. A scanner will scan all .json files under the "Templates" folder and cache them. You can specify a different name in step 1
 3. A resource object and extends the base class JaResource.
 4. Add the JaResource attribute to your resource POCO with the template name specified. 
 
-`{{key}}` - tells the library this is a placeholder. 
+## Sample
+
+
+
+`{{key}}` - indicate this is a placeholder and the library will try to find the value in the resourc object and fill it. 
 `{%templateName%}` - tells the library this is a reference to other template.
 
 ## Roadmap 
