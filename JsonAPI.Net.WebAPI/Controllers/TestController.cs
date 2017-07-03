@@ -16,7 +16,7 @@ namespace JsonAPI.Net.WebAPI
     {
         [HttpGet]
         [Route("account/{id:int}")]
-        public IResource GetAccount(int id){
+        public Account GetAccount(int id){
             return buildAccount();
         }
 
