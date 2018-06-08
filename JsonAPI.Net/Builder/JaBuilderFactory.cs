@@ -47,36 +47,35 @@ namespace JsonAPI.Net
         }
 
         private IBuilder GetBuilderInternal(Type type){
-            
-            IBuilder builder;
-
-            if(customBuilder.TryGetValue(type, out builder)){
+            if(customBuilder.TryGetValue(type, out var builder)){
                 return builder;
             }
 
             if (type == typeof(Uri)){
                 return TryToGetBuilder(JaBuilderType.Uri);
 			}
-			else if (type.IsGenericType)
-			{
-				if (typeof(IDictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()))
-				{
-                    return TryToGetBuilder(JaBuilderType.Dictionary);
-				} else{
-                     return TryToGetBuilder(JaBuilderType.Enumerable);
+			else
+            {
+                if (type.IsGenericType)
+                {
+                    if (typeof(IDictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()))
+                    {
+                        return TryToGetBuilder(JaBuilderType.Dictionary);
+                    }
+
+                    return TryToGetBuilder(JaBuilderType.Enumerable);
                 }
-			}
-            else if (typeof(IResource).IsAssignableFrom(type))
-			{
-                return TryToGetBuilder(JaBuilderType.Resource);
-			}
+                if (typeof(IResource).IsAssignableFrom(type))
+                {
+                    return TryToGetBuilder(JaBuilderType.Resource);
+                }
+            }
+
             return defaultBuilder;
         }
 
         private IBuilder TryToGetBuilder(JaBuilderType builderType){
-            IBuilder builder = null;
-
-            if (builders.TryGetValue(builderType, out builder)) return builder;
+            if (builders.TryGetValue(builderType, out var builder)) return builder;
 
             switch(builderType){
                 case JaBuilderType.Uri:

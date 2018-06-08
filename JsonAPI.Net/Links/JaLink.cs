@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Humanizer;
 
@@ -10,15 +11,9 @@ namespace JsonAPI.Net
 
         public Uri Href { get; set; }
 
-        public string Name { 
-            get{
-                return name ?? GetType().Name.ToLower().Pluralize();
-            } 
-        }
+        public string Name => name ?? GetType().Name.ToLower().Pluralize();
 
-        public void OfName(string name){
-            this.name = name;
-        }
+        public void OfName(string name) =>this.name = name;
 
         public virtual JToken Serialize(JaBuilderContext context){
             throw new NotImplementedException();

@@ -19,21 +19,9 @@ namespace JsonAPI.Net
         {
             return true;
         }
-        public override bool CanRead
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanRead => true;
 
-        public override bool CanWrite
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanWrite => true;
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -45,12 +33,12 @@ namespace JsonAPI.Net
                 IEnumerable<IResource> resources = value as IEnumerable<IResource>;
 
                 if(resources == null){
-                    jaDoc = value is JaDocument ? (JaDocument)value : new JaDocument((IResource)value);   
+                    jaDoc = value is JaDocument document ? document : new JaDocument((IResource)value);   
                 }else{
                     jaDoc = new JaDocument(resources);
                 }
 
-                JaBuilderContext context = new JaBuilderContext(message);
+                var context = new JaBuilderContext(message);
 
                 jaDoc.Serialize(context).WriteTo(writer);
 

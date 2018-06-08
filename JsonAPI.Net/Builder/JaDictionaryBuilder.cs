@@ -6,8 +6,9 @@ namespace JsonAPI.Net
 {
     public class JaDictionaryBuilder : IBuilder
     {
-        public JaBuilderType BuilderType { get { return JaBuilderType.Dictionary; } }
-        public JToken Build(JaBuilderContext context){
+        public JaBuilderType BuilderType => JaBuilderType.Dictionary;
+
+	    public JToken Build(JaBuilderContext context){
 			JObject j = new JObject();
 
             IDictionary<string, object> dic = (IDictionary<string, object>)context.Value;

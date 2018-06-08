@@ -13,31 +13,22 @@ namespace JsonAPI.Net
         private ICollection<ILink> links;
         private ICollection<ILink> relatedLinks;
 
-		private IDictionary<string, object> meta = new Dictionary<string, object>();
-		
-		public IDictionary<string, object> Meta { get { return meta; } }
+	    public IDictionary<string, object> Meta => _meta;
 
-        public virtual ICollection<ILink> Links { 
-            get {
-                return links ?? BuildDefaultLinks();
-            } 
-        }
+	    public virtual ICollection<ILink> Links => links ?? BuildDefaultLinks();
 
-        /// <summary>
-        /// Called for building links when this resource is referenced by others 
-        /// </summary>
-        /// <value>The related links.</value>
-        public virtual ICollection<ILink> RelatedLinks
-		{
-			get{
-				return relatedLinks ?? BuildDefaultLinks() ;
-			}
-		} 
+	    /// <summary>
+	    /// Called for building links when this resource is referenced by others 
+	    /// </summary>
+	    /// <value>The related links.</value>
+	    public virtual ICollection<ILink> RelatedLinks => relatedLinks ?? BuildDefaultLinks();
 
         protected string _templateName;
         protected string type ;
         protected string url;
-		/// <summary>
+	    private readonly IDictionary<string, object> _meta = new Dictionary<string, object>();
+
+	    /// <summary>
 		/// Template name must be pascal, like Accounts
 		/// </summary>
 		/// <returns>The template.</returns>
@@ -64,38 +55,25 @@ namespace JsonAPI.Net
             links.Add(link);
         }
 
-		/// <summary>
-		/// Override with your links collection
-		/// </summary>
-		/// <returns>The links.</returns>
-        public virtual void OfRelatedLinks(ICollection<ILink> links)
-		{
-            this.relatedLinks = links;
-		}
+	    /// <summary>
+	    /// Override with your links collection
+	    /// </summary>
+	    /// <returns>The links.</returns>
+	    public virtual void OfRelatedLinks(ICollection<ILink> links) => relatedLinks = links;
 
         /// <summary>
         /// Override with your customized self link
         /// </summary>
         /// <returns>The self link.</returns>
-        public virtual IList<ILink> BuildDefaultLinks(){
-            return new List<ILink>() { new JaSimpleLink("self", new Uri($"/{ url ?? Type }/{Id ?? string.Empty}")) };
-        }
+        public virtual IList<ILink> BuildDefaultLinks() => new List<ILink>() { new JaSimpleLink("self", new Uri($"/{ url ?? Type }/{Id ?? string.Empty}")) };
 
 		/// <summary>
 		/// By default, the type is the Pluralize of the class name
 		/// </summary>
 		/// <value>The type.</value>
-		public string Type
-		{
-			get
-			{
-				if (type != null) return type;
+		public string Type => type ?? GetType().Name.ToLower().Pluralize();
 
-				return GetType().Name.ToLower().Pluralize();
-			}
-		}
-
-        protected JObject GetTemplate(){
+	    protected JObject GetTemplate(){
             return GetTemplate(this._templateName ?? Type.Pascalize());
         }
 
@@ -111,20 +89,17 @@ namespace JsonAPI.Net
 
         public static JToken Deserialize(JToken token){
 
-            JToken tmp = token["data"] ?? token;
+            JToken value = token["data"] ?? token;
 
-            if(tmp is JArray){
-                JArray array = new JArray();
+	        if (!(value is JArray tmp)) return ParseObject(value);
+	        
+	        JArray array = new JArray();
 
-                foreach(var o in (JArray)tmp){
-                    array.Add(ParseObject(o));
-                }
-
-                return array;
-
-            }else{
-                return ParseObject(tmp);   
-            }
+	        foreach (var o in tmp)
+	        {
+		        array.Add(ParseObject(o));
+	        }
+	        return array;
         }
 
         /// <summary>
@@ -160,11 +135,7 @@ namespace JsonAPI.Net
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-
-            JaResourceBase jb = obj as JaResourceBase;
-
-            if (jb == null) return false;
+	        if (!(obj is JaResourceBase jb)) return false;
 
             return Id.Equals(jb.Id) && Type.Equals(jb.Type);
         }

@@ -9,3 +9,5 @@
 packages/
 [Oo]bj/
 
+# ignore idea files
+.idea/

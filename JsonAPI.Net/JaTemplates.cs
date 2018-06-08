@@ -13,15 +13,9 @@ namespace JsonAPI.Net
             LoadBuildInTemplates();
         }
 
-        public static JObject GetTemplate(string templateName){
-            return GetTemplate(templateName, true);
-        }
-
-		public static JObject GetTemplate(string templateName, bool useCopy)
+        public static JObject GetTemplate(string templateName, bool useCopy = true)
 		{
-            JObject jb;
-
-            if(!templates.TryGetValue(templateName, out jb)){
+            if(!templates.TryGetValue(templateName, out var jb)){
                 throw new Exception($"Template {templateName} does not exist");
 			}
 

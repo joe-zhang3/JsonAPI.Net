@@ -11,13 +11,13 @@ namespace JsonAPI.Net
 
             if (token.Type == JTokenType.Null) return true;
 
-            JArray array = token as JArray;
-
-            if (array != null) return array.Count == 0;
-
-            JObject obj = token as JObject;
-
-            if (obj != null) return !obj.HasValues;
+            switch (token)
+            {
+                case JArray array:
+                    return array.Count == 0;
+                case JObject obj:
+                    return !obj.HasValues;
+            }
 
             return false;
         }

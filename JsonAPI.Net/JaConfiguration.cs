@@ -7,7 +7,7 @@ namespace JsonAPI.Net
     {
         private IList<ICustomBuilder> builders;
 
-        internal IList<ICustomBuilder> GetBuilders(){
+        internal IEnumerable<ICustomBuilder> GetBuilders(){
             return builders;
         }
         public string TemplateDirectory { get; set; }
@@ -16,7 +16,7 @@ namespace JsonAPI.Net
             if(builders == null) builders = new List<ICustomBuilder>();
 
             builders.Add(builder);
-
+            
             return this;
         }
     }

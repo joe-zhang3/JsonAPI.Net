@@ -7,8 +7,9 @@ namespace JsonAPI.Net
 {
     public class JaEnumerableBuilder : IBuilder
     {
-        public JaBuilderType BuilderType { get { return JaBuilderType.Enumerable; } }
-        public JToken Build(JaBuilderContext context){
+        public JaBuilderType BuilderType => JaBuilderType.Enumerable;
+
+	    public JToken Build(JaBuilderContext context){
 			
             IEnumerable<IResource> elements = (IEnumerable<IResource>)context.Value;
 

@@ -12,10 +12,8 @@ namespace JsonAPI.Net
 			configuration.Formatters.Insert(0, new JaMediaTypeFormatter());
 
             JaConfiguration config = new JaConfiguration(); 
-
-            if(action != null){
-                action.Invoke(config);
-            }
+		    
+		    action?.Invoke(config);
 
             JaBuilderFactory.Initialize(config);
 

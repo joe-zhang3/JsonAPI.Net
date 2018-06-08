@@ -27,9 +27,7 @@ namespace JsonAPI.Net
 
             var content = result.Content as ObjectContent;
 
-            var error = content?.Value as HttpError;
-
-            if (error != null){
+            if (content?.Value is HttpError error){
                 JaError je = new JaError(error);
                 je.StatusCode = result.StatusCode;
                 request.Properties.Add(Constants.HAS_ERROR, je);

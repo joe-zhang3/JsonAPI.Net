@@ -13,7 +13,7 @@ namespace JsonAPI.Net
 {
     internal class JaMediaTypeFormatter : MediaTypeFormatter
     {
-        private HttpRequestMessage message;
+        private readonly HttpRequestMessage message;
         internal JaMediaTypeFormatter(HttpRequestMessage message) : this(){
             this.message = message;
         }
@@ -22,16 +22,12 @@ namespace JsonAPI.Net
             SupportedMediaTypes.Add(new MediaTypeHeaderValue(Constants.MEDIA_TYPE));
         }
 
-        public override bool CanReadType(Type type){
-            return true;
-        }
-        public override bool CanWriteType(Type type){
-            return true;
-        }
+        public override bool CanReadType(Type type) => true;
+        public override bool CanWriteType(Type type) => true;
 
         public override async Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext){
 
-            bool hasError = message.Properties.ContainsKey(Constants.HAS_ERROR);
+            var hasError = message.Properties.ContainsKey(Constants.HAS_ERROR);
 
             if(hasError){
                 value = message.Properties[Constants.HAS_ERROR];
@@ -39,7 +35,7 @@ namespace JsonAPI.Net
 
             if (!(value is IResource || value is IEnumerable<IResource>)) await base.WriteToStreamAsync(type, value, writeStream, content, transportContext);
 
-            string result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(message));
+            var result = JsonConvert.SerializeObject(value, Formatting.Indented, new JaConverter(message));
 
             using(var writter = new StreamWriter(writeStream)){
                 await writter.WriteAsync(result);

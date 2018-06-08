@@ -9,16 +9,8 @@ namespace JsonAPI.Net
         public static string EvaulationKey(this JProperty property){
 			string value = property.Value.ToString();
 
-			if (value.EvaulationRequired())
-			{
-                if(value.Length == 0){
-                    return property.Name.GetKeyFromName();                          
-                }else{
-                    return property.Value.ToString().GetEvaulationKey();
-                }
-			}
-
-            return null;
+            if (!value.EvaulationRequired()) return null;
+            return value.Length == 0 ? property.Name.GetKeyFromName() : property.Value.ToString().GetEvaulationKey();
         }
     }
 }

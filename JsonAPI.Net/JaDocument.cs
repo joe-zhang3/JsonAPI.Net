@@ -91,7 +91,7 @@ namespace JsonAPI.Net
         }
 
         private JToken BuildResources(JaBuilderContext context, ICollection<IResource> items, bool forceToUseArray = false){
-            if (items == null || items.Count() == 0) return null;
+            if (items == null || !items.Any()) return null;
 
             if (items.Count > 1 || forceToUseArray || hasError){
                 JArray array = new JArray(); 
